@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Ticketing</string>
+    <string name="van_vihar_dhungri">Van Vihar Dhungri</string>
+    <string name="children">Children</string>
+    <string name="adult">Adult</string>
+    <string name="type">Type</string>
+    <string name="count">Count</string>
+    <string name="total">Total</string>
+    <string name="print">Print</string>
+</resources>

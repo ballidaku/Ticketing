@@ -6,4 +6,11 @@
 
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorGrayDark">#9d9e9e</color>
+    <color name="colorText">#1e1e1e</color>
+    <color name="colorUnselected">#B7B7B7</color>
+    <color name="colorDivider">#cacaca</color>
+
+
+    <color name="colorGray">#bcbfbf</color>
 </resources>

@@ -1,9 +1,14 @@
 package example.com.ballidaku.commonClasses;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.Html;
@@ -24,7 +29,7 @@ import example.com.ballidaku.R;
  */
 public class CommonDialogs
 {
-    String TAG= CommonDialogs.class.getSimpleName();
+    String TAG = CommonDialogs.class.getSimpleName();
 
     public Dialog dialog;
 
@@ -55,9 +60,15 @@ public class CommonDialogs
         dialog.show();
 
         EditText editTextForgotPassword = dialog.findViewById(R.id.editTextForgotPassword);
+
+
         TextInputLayout textInputLayoutEmail = dialog.findViewById(R.id.textInputLayoutEmail);
 
-        dialog.findViewById(R.id.textViewCancel).setOnClickListener(view -> dismissDialog());
+        dialog.findViewById(R.id.textViewCancel).setOnClickListener(view ->
+        {
+            CommonMethods.getInstance().hideKeypad(context, editTextForgotPassword);
+            dismissDialog();
+        });
 
         dialog.findViewById(R.id.textViewSend).setOnClickListener(view ->
         {
@@ -95,7 +106,7 @@ public class CommonDialogs
             public void afterTextChanged(Editable editable)
             {
 
-                String email=editable.toString();
+                String email = editable.toString();
                 if (email.isEmpty())
                 {
                     textInputLayoutEmail.setError(context.getString(R.string.please_enter_email));
@@ -113,7 +124,6 @@ public class CommonDialogs
             }
         });
     }
-
 
 
     public void progressDialog(Context context)
@@ -142,6 +152,49 @@ public class CommonDialogs
         TextView textViewTitle = dialog.findViewById(R.id.textViewTitle);
         textViewTitle.setText(Html.fromHtml(message));
         dialog.findViewById(R.id.textViewOk).setOnClickListener(view -> dialog.dismiss());
+    }
+
+    public void selectImageDialog(final Context context)
+    {
+        try
+        {
+            PackageManager pm = context.getPackageManager();
+            int hasPerm = pm.checkPermission(Manifest.permission.CAMERA, context.getPackageName());
+            if (hasPerm == PackageManager.PERMISSION_GRANTED)
+            {
+                final CharSequence[] options = {context.getString(R.string.take_photo), context.getString(R.string.choose_from_gallery), context.getString(R.string.cancel)};
+                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
+                builder.setTitle(context.getString(R.string.select_option));
+                builder.setItems(options, (dialog, item) ->
+                {
+                    if (options[item].equals(context.getString(R.string.take_photo)))
+                    {
+                        dialog.dismiss();
+                        CommonMethods.getInstance().capture(context);
+                    }
+                    else if (options[item].equals(context.getString(R.string.choose_from_gallery)))
+                    {
+                        dialog.dismiss();
+
+                        Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        ((Activity) context).startActivityForResult(pickPhoto, MyConstants.PICK_IMAGE_GALLERY);
+
+                    }
+                    else if (options[item].equals(context.getString(R.string.cancel)))
+                    {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+            }
+            else
+                CommonMethods.getInstance().showToast(context, context.getString(R.string.on_permission_decline));
+        }
+        catch (Exception e)
+        {
+            CommonMethods.getInstance().showToast(context, context.getString(R.string.on_permission_decline));
+            e.printStackTrace();
+        }
     }
 
    /* public void showMessageDialog(Context context, String fromWhere, View.OnClickListener onClickListener)

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 
+import example.com.ballidaku.mainSceens.MainActivity;
 import example.com.ballidaku.R;
 import example.com.ballidaku.commonClasses.CommonDialogs;
 import example.com.ballidaku.commonClasses.CommonInterfaces;
@@ -31,11 +32,15 @@ public class LoginActivity extends AppCompatActivity
         activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         activityLoginBinding.setViewModel(this);
 
+        activityLoginBinding.imageViewPasswordShowHide.setTag(false);
+
     }
 
 
     public void onSignInClicked(String email, String password)
     {
+     /*   CommonMethods.getInstance().hideKeypad(this);
+
         if (email.isEmpty())
         {
             showSnackbarMsg(context.getString(R.string.please_enter_email));
@@ -55,7 +60,9 @@ public class LoginActivity extends AppCompatActivity
         else
         {
 
-        }
+        }*/
+
+     startActivity(new Intent(context,MainActivity.class));
     }
 
     public void onPasswordShowHideClicked()

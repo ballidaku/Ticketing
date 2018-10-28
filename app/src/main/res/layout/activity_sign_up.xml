@@ -17,7 +17,8 @@
         android:background="@color/colorPrimary"
         android:fillViewport="true"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingRight="10dp"
+        android:scrollbarStyle="outsideOverlay">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,7 +31,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/_8sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
                 card_view:cardCornerRadius="@dimen/_8sdp"
                 card_view:contentPadding="@dimen/_10sdp">
 
@@ -48,8 +52,7 @@
                         android:onClick="@{() -> viewModel.onImageClick()}"
                         android:src="@mipmap/ic_user_placeholder"
                         app:civ_border_color="#FFFFFF"
-                        app:civ_border_width="2dp" />
-
+                        app:civ_border_width="2dp"/>
 
 
                     <LinearLayout
@@ -75,15 +78,15 @@
                                 style="@style/TextViewTheme"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/name"/>
+                                android:text="@string/first_name"/>
 
                             <EditText
-                                android:id="@+id/editTextName"
+                                android:id="@+id/editTextFirstName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_5sdp"
                                 android:background="@android:color/transparent"
-                                android:hint="@string/enter_name"
+                                android:hint="@string/enter_first_name"
                                 android:inputType="textCapSentences"
                                 android:text=""
                                 android:theme="@style/EditTextTheme"/>
@@ -94,8 +97,54 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:src="@drawable/ic_divider"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:orientation="horizontal">
+
+
+                        <ImageView
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            app:srcCompat="@drawable/ic_user"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/TextViewTheme"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/last_name"/>
+
+                            <EditText
+                                android:id="@+id/editTextLastName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:background="@android:color/transparent"
+                                android:hint="@string/enter_last_name"
+                                android:inputType="textCapSentences"
+                                android:text=""
+                                android:theme="@style/EditTextTheme"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:src="@drawable/ic_divider"/>
 
                     <LinearLayout
@@ -140,8 +189,8 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:src="@drawable/ic_divider"/>
 
                     <LinearLayout
@@ -186,8 +235,8 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:src="@drawable/ic_divider"/>
 
 
@@ -232,8 +281,8 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:src="@drawable/ic_divider"/>
 
                     <LinearLayout
@@ -279,8 +328,8 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_30sdp"
                         android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_30sdp"
                         android:src="@drawable/ic_divider"/>
 
 
@@ -295,7 +344,7 @@
                         android:clickable="true"
                         android:elevation="5dp"
                         android:gravity="center"
-                        android:onClick="@{() -> viewModel.onSignUpClicked(editTextName.getText().toString(),editTextEmail.getText().toString(),editTextPhone.getText().toString(),editTextPassword.getText().toString(),editTextConfirmPassword.getText().toString())}"
+                        android:onClick="@{() -> viewModel.onSignUpClicked(editTextFirstName.getText().toString(),editTextLastName.getText().toString(),editTextEmail.getText().toString(),editTextPhone.getText().toString(),editTextPassword.getText().toString(),editTextConfirmPassword.getText().toString())}"
                         android:padding="@dimen/_10sdp"
                         android:text="@string/signup2"
                         android:textSize="18sp"/>
@@ -323,8 +372,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clickable="true"
-                            android:onClick="@{() -> viewModel.onSignInClicked()}"
                             android:gravity="center"
+                            android:onClick="@{() -> viewModel.onSignInClicked()}"
                             android:text="@string/signin2"
                             android:textSize="@dimen/_10sdp"
                             android:textStyle="bold"/>

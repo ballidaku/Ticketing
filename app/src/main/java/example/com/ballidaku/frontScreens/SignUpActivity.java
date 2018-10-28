@@ -1,5 +1,6 @@
 package example.com.ballidaku.frontScreens;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -7,10 +8,17 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.net.URISyntaxException;
+import java.util.List;
 
 import example.com.ballidaku.R;
 import example.com.ballidaku.commonClasses.CommonDialogs;
@@ -20,11 +28,12 @@ import example.com.ballidaku.databinding.ActivitySignUpBinding;
 
 public class SignUpActivity extends AppCompatActivity
 {
+    String TAG = SignUpActivity.class.getSimpleName();
 
     Context context;
 
-
     ActivitySignUpBinding activitySignUpBinding;
+    View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,6 +41,7 @@ public class SignUpActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         activitySignUpBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up);
         context = this;
+        view = activitySignUpBinding.getRoot();
         activitySignUpBinding.setViewModel(this);
 
     }
@@ -42,11 +52,17 @@ public class SignUpActivity extends AppCompatActivity
     }
 
 
-    public void onSignUpClicked(String name, String email, String phoneNumber, String password, String confirmPassword)
+    public void onSignUpClicked(String firstName,String lastName, String email, String phoneNumber, String password, String confirmPassword)
     {
-        if (name.isEmpty())
+        CommonMethods.getInstance().hideKeypad(this);
+
+        if (firstName.isEmpty())
         {
-            showSnackbarMsg(context.getString(R.string.please_enter_name));
+            showSnackbarMsg(context.getString(R.string.please_enter_first_name));
+        }
+        else if (lastName.isEmpty())
+        {
+            showSnackbarMsg(context.getString(R.string.please_enter_last_name));
         }
         else if (email.isEmpty())
         {
@@ -131,7 +147,33 @@ public class SignUpActivity extends AppCompatActivity
 
     public void onImageClick()
     {
-        CommonDialogs.getInstance().selectImageDialog(context, null);
+        Dexter.withActivity(this)
+                .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new MultiplePermissionsListener()
+                {
+
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report)
+                    {
+                        if (report.areAllPermissionsGranted())
+                        {
+                            CommonDialogs.getInstance().selectImageDialog(context);
+                        }
+                        else if (report.isAnyPermissionPermanentlyDenied())
+                        {
+                            CommonMethods.getInstance().showSnackbar(view, context, getString(R.string.on_permission_decline));
+                            CommonMethods.getInstance().openSettings(context);
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token)
+                    {
+                        token.continuePermissionRequest();
+                    }
+                })
+                .onSameThread()
+                .check();
     }
 
     public void showSnackbarMsg(String string)
@@ -160,7 +202,6 @@ public class SignUpActivity extends AppCompatActivity
             case MyConstants.PICK_IMAGE_GALLERY:
 
                 Uri selectedImage = data.getData();
-                //String imagePathTemp = CommonMethods.getInstance().getRealPathFromURI(context, selectedImage);
                 // CropImage.activity(Uri.parse("file://" + imagePathTemp))
                 CropImage.activity(selectedImage)
                         .setAspectRatio(1, 1)

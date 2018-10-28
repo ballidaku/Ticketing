@@ -1,9 +1,17 @@
 <resources>
     <string name="app_name">Ticketing</string>
     <string name="van_vihar_dhungri">Van Vihar Dhungri</string>
+    <string name="van_vihar_manali">Van Vihar Manali</string>
+    <string name="nature_park_manali">Nature Park Manali</string>
+    <string name="mini_zoo_rewalsar">Mini Zoo Rewalsar</string>
+
+
     <string name="children">Children</string>
     <string name="adult">Adult</string>
     <string name="type">Type</string>
+    <string name="entry_ticket">Entry Ticket</string>
+    <string name="battery_operator_vehicle">Battery Operator Vehicle</string>
+    <string name="boating">Boating</string>
     <string name="count">Count</string>
     <string name="total">Total</string>
     <string name="print">Print</string>
@@ -24,8 +32,10 @@
     <string name="signup"> \u0020 SIGN UP</string>
     <string name="signin2"> \u0020 SIGN IN</string>
     <string name="signup2">Sign Up</string>
-    <string name="name">NAME</string>
-    <string name="enter_name">Enter name</string>
+    <string name="first_name">FIRST NAME</string>
+    <string name="last_name">LAST NAME</string>
+    <string name="enter_first_name">Enter first name</string>
+    <string name="enter_last_name">Enter last name</string>
     <string name="phone">PHONE</string>
     <string name="enter_phone_number">Enter phone number</string>
 
@@ -36,7 +46,8 @@
     <string name="please_enter_password">Please enter password.</string>
     <string name="password_limit">Password must be of 6 digits.</string>
     <string name="confirm_password_limit">Confirm password must be of 6 digits.</string>
-    <string name="please_enter_name">Please enter name.</string>
+    <string name="please_enter_first_name">Please enter first name.</string>
+    <string name="please_enter_last_name">Please enter last name.</string>
     <string name="please_enter_phone_number">Please enter phone number.</string>
     <string name="number_limit">Please enter phone number minimum of 6 digits.</string>
     <string name="please_enter_confirm_password">Please enter confirm password.</string>
@@ -51,8 +62,10 @@
     <string name="image_select">Image</string>
     <string name="select_option">Select Option</string>
     <string name="choose_from_gallery">Choose From Gallery</string>
-    <string name="cancel">Cancel</string>
-    <string name="permission">Please enable all permission</string>
-    <string name="camera_permission_error">Camera Permission error</string>
+
+    <string name="on_permission_decline">Both camera and storage permission are needed to take pictures</string>
+
+    <string name="number_picker_formatter">%02d</string>
+    <string name="roboto_light">sans-serif-light</string>
 
 </resources>

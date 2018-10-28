@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 
-import example.com.ballidaku.MainActivity;
 import example.com.ballidaku.R;
-import example.com.ballidaku.commonClasses.MySharedPreference;
 
 
 public class Splash extends AppCompatActivity
@@ -37,20 +35,20 @@ public class Splash extends AppCompatActivity
 
         public void onFinish()
         {
-            if (MySharedPreference.getInstance().getUserID(context).isEmpty())
-            {
+//          if (MySharedPreference.getInstance().getUserID(context).isEmpty())
+//            {
                 Intent intent = new Intent(context, LoginActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                 finish();
-            }
+             /* }
             else
             {
                 Intent intent = new Intent(context, MainActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                 finish();
-            }
+            }*/
         }
     };
 }

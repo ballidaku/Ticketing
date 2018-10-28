@@ -4,55 +4,31 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.util.HashMap;
-
 /**
  * Created by sharanpalsingh on 26/03/17.
  */
 public class MySharedPreference
 {
 
-    private final String PreferenceName = "TicketingPreference";
-
-
     private MySharedPreference()
     {
     }
 
-    public static MySharedPreference instance = null;
+    public static MySharedPreference instance = new MySharedPreference();
 
     public static MySharedPreference getInstance()
     {
-        if (instance == null)
-        {
-            instance = new MySharedPreference();
-        }
-
         return instance;
     }
 
-
-     private SharedPreferences getPreference(Context context)
+    private SharedPreferences getPreference(Context context)
     {
-        return context.getSharedPreferences(PreferenceName, Activity.MODE_PRIVATE);
+        String preferenceName = "TicketingPreference";
+        return context.getSharedPreferences(preferenceName, Activity.MODE_PRIVATE);
     }
 
 
-    public void saveToken(Context context, String fcmToken)
-    {
-        SharedPreferences.Editor editor = getPreference(context).edit();
-        editor.putString(MyConstant.FCM_TOKEN, fcmToken);
-        editor.apply();
-    }
-
-
-    public String getToken(Context context)
-    {
-        return getPreference(context).getString(MyConstant.FCM_TOKEN, "");
-    }
-
-
-    public void saveUser(Context context, HashMap<String, Object> map)
+/*    public void saveUser(Context context, HashMap<String, Object> map)
     {
         SharedPreferences.Editor editor = getPreference(context).edit();
         editor.putString(MyConstant.USER_ID, (String) map.get(MyConstant.USER_ID));
@@ -95,12 +71,7 @@ public class MySharedPreference
     public void clearMPIN(Context context)
     {
         getPreference(context).edit().putString(MyConstant.MPIN, "").apply();
-    }
+    }*/
 
-    public void saveMPIN(Context context, String mpin)
-    {
-        SharedPreferences.Editor editor = getPreference(context).edit();
-        editor.putString(MyConstant.MPIN, mpin);
-        editor.apply();
-    }
+
 }

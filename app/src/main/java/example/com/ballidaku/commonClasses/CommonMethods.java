@@ -1,12 +1,10 @@
 package example.com.ballidaku.commonClasses;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -14,12 +12,16 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,11 +37,12 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import example.com.ballidaku.BuildConfig;
 import example.com.ballidaku.R;
 
 public class CommonMethods
 {
-    String TAG=CommonMethods.class.getSimpleName();
+    String TAG = CommonMethods.class.getSimpleName();
 
     private static Toast toast;
     private static Snackbar snackbar;
@@ -84,7 +87,38 @@ public class CommonMethods
     }
 
 
-    String fixedLengthString(int value, int length)
+    public void switchfragment(Context context, Fragment toWhere, boolean willStoreInStack)
+    {
+
+        FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.container_body, toWhere);
+        if (willStoreInStack)
+        {
+            fragmentTransaction.addToBackStack(null);
+        }
+        fragmentTransaction.commit();
+
+    }
+
+    public void hideKeypad(Activity activity)
+    {
+        View view = activity.getCurrentFocus();
+        if (view != null)
+        {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            assert imm != null;
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    public void hideKeypad(Context context, View view)
+    {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+
+    public String fixedLengthString(int value, int length)
     {
         return String.format("%1$" + length + "s", String.valueOf(value));
     }
@@ -96,22 +130,22 @@ public class CommonMethods
 
     public Uri getTempraryImageFile(Context context)
     {
-        File outputFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() , "IMG_Temp.jpg");
+        File outputFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "IMG_Temp.jpg");
 
         Log.e(TAG, "Path " + outputFile.toString());
         return Uri.fromFile(outputFile);
     }
 
-    private SimpleDateFormat df = new SimpleDateFormat("dd MMM yyyy",Locale.US);
-    private SimpleDateFormat tf = new SimpleDateFormat("hh:mm a",Locale.US);
+    private SimpleDateFormat df = new SimpleDateFormat("dd MMM yyyy", Locale.US);
+    private SimpleDateFormat tf = new SimpleDateFormat("hh:mm a", Locale.US);
 
-    String getDate()
+    public String getDate()
     {
         Date c = Calendar.getInstance().getTime();
         return df.format(c);
     }
 
-    String getTime()
+    public String getTime()
     {
         Date c = Calendar.getInstance().getTime();
         return tf.format(c);
@@ -128,7 +162,6 @@ public class CommonMethods
         check = !Pattern.matches("[a-zA-Z]+", phone) && phone.length() >= 6;
         return check;
     }
-
 
 
     @SuppressLint("NewApi")
@@ -221,69 +254,45 @@ public class CommonMethods
     }
 
 
-    public void selectImageDialog(final Context context, final Fragment fragment)
+    void capture(Context context)
     {
-        try
-        {
-            PackageManager pm = context.getPackageManager();
-            int hasPerm = pm.checkPermission(Manifest.permission.CAMERA, context.getPackageName());
-            if (hasPerm == PackageManager.PERMISSION_GRANTED)
-            {
-                final CharSequence[] options = {context.getString(R.string.take_photo), context.getString(R.string.choose_from_gallery), context.getString(R.string.cancel)};
-                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
-                builder.setTitle(context.getString(R.string.select_option));
-                builder.setItems(options, (dialog, item) ->
-                {
-                    if (options[item].equals(context.getString(R.string.take_photo)))
-                    {
-                        dialog.dismiss();
-                        CommonMethods.getInstance().capture(context, fragment);
-                    }
-                    else if (options[item].equals(context.getString(R.string.choose_from_gallery)))
-                    {
-                        dialog.dismiss();
-
-                        Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                        ((Activity) context).startActivityForResult(pickPhoto, GlobalKeys.PICK_IMAGE_GALLERY);
-
-                    }
-                    else if (options[item].equals(context.getString(R.string.cancel)))
-                    {
-                        dialog.dismiss();
-                    }
-                });
-                builder.show();
-            }
-            else
-                CommonMethods.getInstance().showToast(context, context.getString(R.string.camera_permission_error));
-        }
-        catch (Exception e)
-        {
-            CommonMethods.getInstance().showToast(context, context.getString(R.string.camera_permission_error));
-            e.printStackTrace();
-        }
-    }
-
-    public void capture(Context context, Fragment fragment)
-    {
-
-        image = System.currentTimeMillis() + ".jpg";
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Uri apkURI = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", getTempraryImageFile2(context));
-
+        Uri apkURI = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", getTempraryImageFile());
         intent.putExtra(MediaStore.EXTRA_OUTPUT, apkURI);
-
         ((Activity) context).startActivityForResult(intent, MyConstants.CAMERA_REQUEST);
 
     }
 
-    public File getTempraryImageFile2(Context context)
+    private File getTempraryImageFile()
     {
-        File outputFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() , "IMG_Temp.jpg");
-
+        File outputFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "IMG_Temp.jpg");
         Log.e(TAG, "Path " + outputFile.toString());
         return outputFile;
+    }
+
+    public void deleteTempraryImage()
+    {
+        File outputFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "IMG_Temp.jpg");
+        deleteRecursive(outputFile);
+    }
+
+    private void deleteRecursive(File fileOrDirectory)
+    {
+        if (fileOrDirectory.isDirectory())
+            for (File child : fileOrDirectory.listFiles())
+                deleteRecursive(child);
+
+        fileOrDirectory.delete();
+    }
+
+    public void openSettings(Context context)
+    {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null);
+        intent.setData(uri);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
 }

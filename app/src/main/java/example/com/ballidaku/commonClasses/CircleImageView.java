@@ -28,7 +28,7 @@ import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 
-import pagination.dev.brst.com.meggalife.R;
+import example.com.ballidaku.R;
 
 
 public class CircleImageView extends ImageView

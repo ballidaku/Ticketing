@@ -22,4 +22,7 @@
     <dimen name="headingHigh">@dimen/_16sdp</dimen>
     <dimen name="heading">@dimen/_14sdp</dimen>
     <dimen name="headingChild">@dimen/_13sdp</dimen>
+
+    <dimen name="text_size">16dp</dimen>
+    <dimen name="selected_text_size">22dp</dimen>
 </resources>

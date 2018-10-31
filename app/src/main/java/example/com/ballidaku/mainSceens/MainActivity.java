@@ -16,6 +16,7 @@ import example.com.ballidaku.commonClasses.CommonMethods;
 import example.com.ballidaku.databinding.ActivityMainBinding;
 import example.com.ballidaku.mainSceens.fragments.FirstFragment;
 import example.com.ballidaku.mainSceens.fragments.FourthFragment;
+import example.com.ballidaku.mainSceens.fragments.MainFragment;
 import example.com.ballidaku.mainSceens.fragments.SecondFragment;
 import example.com.ballidaku.mainSceens.fragments.ThirdFragment;
 import woyou.aidlservice.jiuiv5.ICallback;
@@ -39,14 +40,20 @@ public class MainActivity extends AppCompatActivity
 
         setUpViews();
 
-        changeFragment(4);
+        changeFragment(0);
     }
 
-    private void changeFragment(int v)
+    public void changeFragment(int v)
     {
         Fragment fragment = null;
+        boolean haveToAddBackStack=true;
         switch (v)
         {
+            case 0:
+                haveToAddBackStack=false;
+                fragment = new MainFragment<>();
+                break;
+
             case 1:
                 fragment = new FirstFragment();
                 break;
@@ -65,7 +72,7 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        CommonMethods.getInstance().switchfragment(context, fragment, false);
+        CommonMethods.getInstance().switchfragment(context, fragment, haveToAddBackStack);
 
     }
 

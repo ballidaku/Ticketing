@@ -15,6 +15,15 @@ public class Model
 
     String foreigner;
 
+    String packageValue;
+    String weekly;
+    String fortNightly;
+    String monthly;
+
+    String parking1;
+    String parking2;
+    String parking3;
+
     public String getChildren()
     {
         return children;
@@ -93,5 +102,75 @@ public class Model
     public void setForeigner(String foreigner)
     {
         this.foreigner = foreigner;
+    }
+
+    public String getPackageValue()
+    {
+        return packageValue;
+    }
+
+    public void setPackageValue(String packageValue)
+    {
+        this.packageValue = packageValue;
+    }
+
+    public String getWeekly()
+    {
+        return weekly;
+    }
+
+    public void setWeekly(String weekly)
+    {
+        this.weekly = weekly;
+    }
+
+    public String getFortNightly()
+    {
+        return fortNightly;
+    }
+
+    public void setFortNightly(String fortNightly)
+    {
+        this.fortNightly = fortNightly;
+    }
+
+    public String getMonthly()
+    {
+        return monthly;
+    }
+
+    public void setMonthly(String monthly)
+    {
+        this.monthly = monthly;
+    }
+
+    public String getParking1()
+    {
+        return parking1;
+    }
+
+    public void setParking1(String parking1)
+    {
+        this.parking1 = parking1;
+    }
+
+    public String getParking2()
+    {
+        return parking2;
+    }
+
+    public void setParking2(String parking2)
+    {
+        this.parking2 = parking2;
+    }
+
+    public String getParking3()
+    {
+        return parking3;
+    }
+
+    public void setParking3(String parking3)
+    {
+        this.parking3 = parking3;
     }
 }

@@ -26,8 +26,9 @@ public class MainActivity extends AppCompatActivity
 {
     String TAG = MainActivity.class.getSimpleName();
 
-    ActivityMainBinding activityMainBinding;
+    public ActivityMainBinding activityMainBinding;
     Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity
 
     void setUpViews()
     {
+
 
         Intent intent = new Intent();
         intent.setPackage("woyou.aidlservice.jiuiv5");

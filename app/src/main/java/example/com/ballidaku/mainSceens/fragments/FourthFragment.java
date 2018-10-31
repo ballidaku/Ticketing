@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -55,6 +56,10 @@ public class FourthFragment extends Fragment
     void setUpViews()
     {
         ((MainActivity) context).updateToolbarTitle(getString(R.string.mini_zoo_rewalsar));
+
+        ((MainActivity)context).setSupportActionBar(((MainActivity)context).activityMainBinding.toolbar);
+        ((MainActivity)context).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        ((MainActivity)context).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         childrenPerCost = MyConstants.MINI_ZOO_REWALSAR_CHILDREN_TICKET;
         adultPerCost = MyConstants.MINI_ZOO_REWALSAR_ADULT_TICKET;
@@ -170,5 +175,28 @@ public class FourthFragment extends Fragment
         {
             e.printStackTrace();
         }
+
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                ((MainActivity)context).onBackPressed();
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        ((MainActivity)context).getSupportActionBar().setDisplayShowHomeEnabled(false);
+        ((MainActivity)context).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ((MainActivity)context).getSupportActionBar().setTitle("");
     }
 }

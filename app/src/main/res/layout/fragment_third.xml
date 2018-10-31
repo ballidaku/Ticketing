@@ -90,7 +90,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginBottom="10dp"
                     android:background="@color/colorPrimary"/>
 
 
@@ -131,6 +130,364 @@
 
                     <TextView
                         android:id="@+id/textViewAllTotal"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="0"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="@string/other"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimary"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textViewPackage"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@{viewModel.packageValue}"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+
+                    <example.com.ballidaku.commonClasses.NumberPicker
+                        android:id="@+id/numberPickerPackage"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_85sdp"
+                        android:layout_weight="1"
+                        app:np_dividerColor="@color/colorText"
+                        app:np_dividerDistance="@dimen/_35sdp"
+                        app:np_formatter="@string/number_picker_formatter"
+                        app:np_height="@dimen/_110sdp"
+                        app:np_max="50"
+                        app:np_min="0"
+                        app:np_selectedTextColor="@color/colorText"
+                        app:np_selectedTextSize="@dimen/selected_text_size"
+                        app:np_textColor="@color/colorText"
+                        app:np_textSize="@dimen/text_size"
+                        app:np_typeface="@string/roboto_light"
+                        app:np_value="0"/>
+
+                    <TextView
+                        android:id="@+id/textViewPackageTotal"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="0"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@{viewModel.weekly}"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+
+                    <example.com.ballidaku.commonClasses.NumberPicker
+                        android:id="@+id/numberPickerWeekly"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_85sdp"
+                        android:layout_weight="1"
+                        app:np_dividerColor="@color/colorText"
+                        app:np_dividerDistance="@dimen/_35sdp"
+                        app:np_formatter="@string/number_picker_formatter"
+                        app:np_height="@dimen/_110sdp"
+                        app:np_max="50"
+                        app:np_min="0"
+                        app:np_selectedTextColor="@color/colorText"
+                        app:np_selectedTextSize="@dimen/selected_text_size"
+                        app:np_textColor="@color/colorText"
+                        app:np_textSize="@dimen/text_size"
+                        app:np_typeface="@string/roboto_light"
+                        app:np_value="0"/>
+
+                    <TextView
+                        android:id="@+id/textViewWeeklyTotal"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="0"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@{viewModel.fortNightly}"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+
+                    <example.com.ballidaku.commonClasses.NumberPicker
+                        android:id="@+id/numberPickerFornightly"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_85sdp"
+                        android:layout_weight="1"
+                        app:np_dividerColor="@color/colorText"
+                        app:np_dividerDistance="@dimen/_35sdp"
+                        app:np_formatter="@string/number_picker_formatter"
+                        app:np_height="@dimen/_110sdp"
+                        app:np_max="50"
+                        app:np_min="0"
+                        app:np_selectedTextColor="@color/colorText"
+                        app:np_selectedTextSize="@dimen/selected_text_size"
+                        app:np_textColor="@color/colorText"
+                        app:np_textSize="@dimen/text_size"
+                        app:np_typeface="@string/roboto_light"
+                        app:np_value="0"/>
+
+                    <TextView
+                        android:id="@+id/textViewFornightlyTotal"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="0"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@{viewModel.monthly}"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+
+                    <example.com.ballidaku.commonClasses.NumberPicker
+                        android:id="@+id/numberPickerMonthly"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_85sdp"
+                        android:layout_weight="1"
+                        app:np_dividerColor="@color/colorText"
+                        app:np_dividerDistance="@dimen/_35sdp"
+                        app:np_formatter="@string/number_picker_formatter"
+                        app:np_height="@dimen/_110sdp"
+                        app:np_max="50"
+                        app:np_min="0"
+                        app:np_selectedTextColor="@color/colorText"
+                        app:np_selectedTextSize="@dimen/selected_text_size"
+                        app:np_textColor="@color/colorText"
+                        app:np_textSize="@dimen/text_size"
+                        app:np_typeface="@string/roboto_light"
+                        app:np_value="0"/>
+
+                    <TextView
+                        android:id="@+id/textViewMonthlyTotal"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="0"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="@string/parking"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimary"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@{viewModel.parking1}"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+
+                    <example.com.ballidaku.commonClasses.NumberPicker
+                        android:id="@+id/numberPickerParking1"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_85sdp"
+                        android:layout_weight="1"
+                        app:np_dividerColor="@color/colorText"
+                        app:np_dividerDistance="@dimen/_35sdp"
+                        app:np_formatter="@string/number_picker_formatter"
+                        app:np_height="@dimen/_110sdp"
+                        app:np_max="50"
+                        app:np_min="0"
+                        app:np_selectedTextColor="@color/colorText"
+                        app:np_selectedTextSize="@dimen/selected_text_size"
+                        app:np_textColor="@color/colorText"
+                        app:np_textSize="@dimen/text_size"
+                        app:np_typeface="@string/roboto_light"
+                        app:np_value="0"/>
+
+                    <TextView
+                        android:id="@+id/textViewParking1Total"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="0"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@{viewModel.parking2}"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+
+                    <example.com.ballidaku.commonClasses.NumberPicker
+                        android:id="@+id/numberPickerParking2"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_85sdp"
+                        android:layout_weight="1"
+                        app:np_dividerColor="@color/colorText"
+                        app:np_dividerDistance="@dimen/_35sdp"
+                        app:np_formatter="@string/number_picker_formatter"
+                        app:np_height="@dimen/_110sdp"
+                        app:np_max="50"
+                        app:np_min="0"
+                        app:np_selectedTextColor="@color/colorText"
+                        app:np_selectedTextSize="@dimen/selected_text_size"
+                        app:np_textColor="@color/colorText"
+                        app:np_textSize="@dimen/text_size"
+                        app:np_typeface="@string/roboto_light"
+                        app:np_value="0"/>
+
+                    <TextView
+                        android:id="@+id/textViewParking2Total"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="0"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@{viewModel.parking3}"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+
+                    <example.com.ballidaku.commonClasses.NumberPicker
+                        android:id="@+id/numberPickerParking3"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_85sdp"
+                        android:layout_weight="1"
+                        app:np_dividerColor="@color/colorText"
+                        app:np_dividerDistance="@dimen/_35sdp"
+                        app:np_formatter="@string/number_picker_formatter"
+                        app:np_height="@dimen/_110sdp"
+                        app:np_max="50"
+                        app:np_min="0"
+                        app:np_selectedTextColor="@color/colorText"
+                        app:np_selectedTextSize="@dimen/selected_text_size"
+                        app:np_textColor="@color/colorText"
+                        app:np_textSize="@dimen/text_size"
+                        app:np_typeface="@string/roboto_light"
+                        app:np_value="0"/>
+
+                    <TextView
+                        android:id="@+id/textViewParking3Total"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -196,6 +553,7 @@
                     android:backgroundTint="@color/colorPrimary"
                     android:onClick="@{() -> handler.onPrintClicked()}"
                     android:text="@string/print"
+                    android:layout_marginBottom="@dimen/_30sdp"
                     android:textColor="@color/colorWhite"
                     tools:ignore="MissingConstraints"
                     tools:layout_editor_absoluteX="148dp"

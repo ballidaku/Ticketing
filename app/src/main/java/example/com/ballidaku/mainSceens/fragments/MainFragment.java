@@ -54,11 +54,16 @@ public class MainFragment<D>  extends Fragment
     {
         ((MainActivity) context).updateToolbarTitle(getString(R.string.zones));
 
+//        ((MainActivity)context).setSupportActionBar(((MainActivity)context).activityMainBinding.toolbar);
+//        ((MainActivity)context).getSupportActionBar().setDisplayShowHomeEnabled(false);
+//        ((MainActivity)context).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+
         ArrayList<D> mainList = new ArrayList<>();
-        mainList.add((D) "VAN VIHAR DHUNGRI");
-        mainList.add((D) "VAN VIHAR MANALI");
-        mainList.add((D) "NATURE PARK\nNEAR WL INTERPRETATION CENTRE MANALI");
-        mainList.add((D) "MINI ZOO REWALSAR");
+        mainList.add((D) "VAN VIHAR\nDHUNGRI");
+        mainList.add((D) "VAN VIHAR\nMANALI");
+        mainList.add((D) "NATURE PARK\nNEAR WL INTERPRETATION CENTRE\nMANALI");
+        mainList.add((D) "MINI ZOO\nREWALSAR");
 
 
         mainFragmentAdapter = new MainFragmentAdapter<>(context, mainList);

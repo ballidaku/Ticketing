@@ -4,14 +4,23 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import java.util.ArrayList;
 
 import example.com.ballidaku.R;
+import example.com.ballidaku.commonClasses.CommonDialogs;
+import example.com.ballidaku.commonClasses.CommonInterfaces;
+import example.com.ballidaku.commonClasses.CommonMethods;
+import example.com.ballidaku.commonClasses.MyConstants;
+import example.com.ballidaku.commonClasses.MySharedPreference;
 import example.com.ballidaku.mainSceens.MainActivity;
 
 
@@ -67,11 +76,45 @@ public class MainFragmentAdapter<T> extends RecyclerView.Adapter<MainFragmentAda
         holder.itemView.setOnClickListener(v ->
         {
 
-            ((MainActivity)context).changeFragment(position+1);
+           String data = MySharedPreference.getInstance().getUserData(context,MyConstants.ZONE_PASSWORD);
+           JsonArray  jsonArray=CommonMethods.getInstance().convertStringToJson(data).get(MyConstants.RANGEZONEBASICMODEL).getAsJsonArray();
+
+
+
+            for (int i = 0; i <jsonArray.size() ; i++)
+            {
+                JsonObject jsonObject=jsonArray.get(i).getAsJsonObject();
+
+                if(position==i)
+                {
+                    Log.e(TAG,"PassCode "+ jsonObject.get(MyConstants.PASSCODE).getAsInt());
+                    checkPasscode(jsonObject.get(MyConstants.PASSCODE).getAsInt(),position+1);
+                }
+            }
+
+//
 
         });
 
 
+    }
+
+    private void checkPasscode(int passcode, int position)
+    {
+        CommonDialogs.getInstance().showPasscodeDialog(context, passcode, new CommonInterfaces()
+        {
+            @Override
+            public void onSuccess()
+            {
+                ((MainActivity)context).changeFragment(position);
+            }
+
+            @Override
+            public void onFailure()
+            {
+                CommonMethods.getInstance().showToast(context, context.getString(R.string.passcode_mismatch));
+            }
+        });
     }
 
 

@@ -10,9 +10,12 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import example.com.ballidaku.R;
 import example.com.ballidaku.commonClasses.CommonMethods;
+import example.com.ballidaku.commonClasses.MySharedPreference;
 import example.com.ballidaku.databinding.ActivityMainBinding;
 import example.com.ballidaku.mainSceens.fragments.FirstFragment;
 import example.com.ballidaku.mainSceens.fragments.FourthFragment;
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity
 
     void setUpViews()
     {
-
+        setSupportActionBar(activityMainBinding.toolbar);
 
         Intent intent = new Intent();
         intent.setPackage("woyou.aidlservice.jiuiv5");
@@ -146,4 +149,33 @@ public class MainActivity extends AppCompatActivity
 
         }
     };
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+
+
+            case R.id.action_signout:
+
+                MySharedPreference.getInstance().clearAllData(context);
+
+                break;
+
+
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

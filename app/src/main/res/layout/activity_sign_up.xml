@@ -315,7 +315,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_5sdp"
                                 android:background="@android:color/transparent"
-                                android:fontFamily="@font/squada_one"
                                 android:hint="@string/enter_confirm_password"
                                 android:inputType="textPassword"
                                 android:text=""

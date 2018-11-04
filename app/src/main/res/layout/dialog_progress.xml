@@ -7,13 +7,23 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <example.com.ballidaku.commonClasses.BoxLoaderView
+    <!--<example.com.ballidaku.commonClasses.BoxLoaderView
         android:layout_width="60dp"
         android:layout_height="60dp"
         app:loaderColor="@color/colorPrimary"
         app:speed="10"
         app:strokeColor="@color/colorWhite"
-        app:strokeWidth="20dp"/>
+        app:strokeWidth="20dp"/>-->
+
+    <com.agrawalsuneet.squareloaderspack.loaders.SquareGridLoader
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:squaregrid_animDelay="80"
+        app:squaregrid_animDuration="400"
+        app:squaregrid_interpolator="@android:interpolator/linear"
+        app:squaregrid_sqaureColor="@color/colorWhite"
+        app:squaregrid_squareCount="4"
+        app:squaregrid_squareLength="14dp" />
 
     <TextView
         android:layout_width="wrap_content"

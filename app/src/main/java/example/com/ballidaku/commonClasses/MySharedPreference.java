@@ -2,7 +2,13 @@ package example.com.ballidaku.commonClasses;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+
+import com.google.gson.JsonObject;
+
+import example.com.ballidaku.frontScreens.LoginActivity;
+import example.com.ballidaku.mainSceens.MainActivity;
 
 /**
  * Created by sharanpalsingh on 26/03/17.
@@ -28,25 +34,57 @@ public class MySharedPreference
     }
 
 
-/*    public void saveUser(Context context, HashMap<String, Object> map)
+    public void saveUser(Context context, String json)
     {
+
+        JsonObject jsonObject = CommonMethods.getInstance().convertStringToJson(json);
+
+
         SharedPreferences.Editor editor = getPreference(context).edit();
-        editor.putString(MyConstant.USER_ID, (String) map.get(MyConstant.USER_ID));
-        editor.putString(MyConstant.USER_NAME, (String) map.get(MyConstant.USER_NAME));
-        editor.putString(MyConstant.USER_EMAIL, (String) map.get(MyConstant.USER_EMAIL));
-        editor.putString(MyConstant.USER_PHONE, (String) map.get(MyConstant.USER_PHONE));
+        editor.putString(MyConstants.ACCESS_TOKEN, jsonObject.get(MyConstants.ACCESS_TOKEN).getAsString());
+        editor.putString(MyConstants.TOKEN_TYPE, jsonObject.get(MyConstants.TOKEN_TYPE).getAsString());
+        editor.putString(MyConstants.EXPIRES_IN, jsonObject.get(MyConstants.EXPIRES_IN).getAsString());
+        editor.putString(MyConstants.USERLOGINOBJECT, jsonObject.get(MyConstants.USERLOGINOBJECT).getAsString());
+
+        JsonObject childJsonObject = CommonMethods.getInstance().convertStringToJson(jsonObject.get(MyConstants.USERLOGINOBJECT).getAsString());
+
+        editor.putString(MyConstants.STATUS, childJsonObject.get(MyConstants.STATUS).getAsString());
+        editor.putString(MyConstants.MESSAGE, childJsonObject.get(MyConstants.MESSAGE).getAsString());
+        editor.putString(MyConstants.USERID, childJsonObject.get(MyConstants.USERID).getAsString());
+        editor.putString(MyConstants.FIRSTNAME, childJsonObject.get(MyConstants.FIRSTNAME).getAsString());
+        editor.putString(MyConstants.PROFILEIMAGENAME, childJsonObject.get(MyConstants.PROFILEIMAGENAME).getAsString());
         editor.apply();
     }
 
-    public String getUserID(Context context)
+
+    public String getUserData(Context context,String key)
     {
-        return getPreference(context).getString(MyConstant.USER_ID, "");
+        return getPreference(context).getString(key, "");
     }
 
-    public void clearUserID(Context context)
+    public void saveData(Context context,String key,String value)
     {
-        getPreference(context).edit().putString(MyConstant.USER_ID, "").apply();
+        SharedPreferences.Editor editor = getPreference(context).edit();
+        editor.putString(key,value);
+        editor.apply();
     }
+
+    public void clearAllData(Context context)
+    {
+        SharedPreferences.Editor editor = getPreference(context).edit();
+        editor.clear();
+        editor.apply();
+
+        context.startActivity(new Intent(context,LoginActivity.class));
+
+        ((MainActivity)context).finish();
+    }
+
+/*
+
+
+
+
 
     public String getUserName(Context context)
     {

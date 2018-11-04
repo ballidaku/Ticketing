@@ -30,6 +30,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -41,6 +43,13 @@ import java.util.regex.Pattern;
 
 import example.com.ballidaku.BuildConfig;
 import example.com.ballidaku.R;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 
 public class CommonMethods
 {
@@ -307,4 +316,65 @@ public class CommonMethods
     }
 
 
-}
+    public JsonObject convertStringToJson(String json)
+    {
+        JsonParser jsonParser = new JsonParser();
+        return (JsonObject) jsonParser.parse(json);
+    }
+
+
+    public Call post(String url, String json, Callback callback)
+    {
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+        RequestBody body = RequestBody.create(mediaType, json);
+
+        Request request;
+        if (json.isEmpty())
+        {
+            request = new Request.Builder()
+                    .url(url)
+                    .get()
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .addHeader("cache-control", "no-cache")
+                    .build();
+        }
+        else
+        {
+            request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .addHeader("cache-control", "no-cache")
+                    .build();
+        }
+
+            Call call = client.newCall(request);
+            call.enqueue(callback);
+
+            return call;
+        }
+
+        public Call postMediaData (String url, String image, String json, Callback callback)
+        {
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("file", new File(image).getName(), RequestBody.create(MediaType.parse("image/*"), new File(image)))
+                    .addFormDataPart("Data", json)
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+
+            Call call = client.newCall(request);
+            call.enqueue(callback);
+
+            return call;
+        }
+
+
+    }

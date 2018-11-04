@@ -7,9 +7,12 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
+import com.google.gson.JsonObject;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -17,6 +20,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -24,7 +28,12 @@ import example.com.ballidaku.R;
 import example.com.ballidaku.commonClasses.CommonDialogs;
 import example.com.ballidaku.commonClasses.CommonMethods;
 import example.com.ballidaku.commonClasses.MyConstants;
+import example.com.ballidaku.commonClasses.MySharedPreference;
 import example.com.ballidaku.databinding.ActivitySignUpBinding;
+import example.com.ballidaku.mainSceens.MainActivity;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class SignUpActivity extends AppCompatActivity
 {
@@ -34,6 +43,8 @@ public class SignUpActivity extends AppCompatActivity
 
     ActivitySignUpBinding activitySignUpBinding;
     View view;
+
+    String imagePath = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,7 +63,7 @@ public class SignUpActivity extends AppCompatActivity
     }
 
 
-    public void onSignUpClicked(String firstName,String lastName, String email, String phoneNumber, String password, String confirmPassword)
+    public void onSignUpClicked(String firstName, String lastName, String email, String phoneNumber, String password, String confirmPassword)
     {
         CommonMethods.getInstance().hideKeypad(this);
 
@@ -102,46 +113,7 @@ public class SignUpActivity extends AppCompatActivity
         }
         else
         {
-
-          /*  file = new File(imagePath);
-            RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
-            fileToUpload = MultipartBody.Part.createFormData("profile_pic", file.getName(), mFile);
-
-            RequestBody emailRequest = RequestBody.create(MediaType.parse("text/plain"), email);
-
-
-            @retrofit2.http.Multipart
-            @POST("users/action.php?action=Register")
-            Call<SignUpHuttson> getSignUpInsurance(@Part("email") RequestBody email,
-                @Part("password") RequestBody password,
-                @Part("firstname") RequestBody firstName,
-                @Part("lastname") RequestBody lastName,
-                @Part("gender") RequestBody gender,
-                @Part("profile_type") RequestBody user,
-                @Part("profile_address") RequestBody address,
-                @Part("about_us") RequestBody aboutUs,
-                @Part("apiKey") RequestBody apiKey,
-                @Part("secretKey") RequestBody secretKey,
-                @Part("version") RequestBody vesrion,
-                @Part("city") RequestBody city,
-                @Part("state") RequestBody state,
-                @Part("zip") RequestBody zip,
-                @Part("dob") RequestBody dob,
-                @Part("coverage_amount") RequestBody coverage_amount,
-                @Part("coverage_type") RequestBody coverage_type,
-                @Part("firstAnswer") RequestBody firstAnswer,
-                @Part("secondAnswer") RequestBody secondAnswer,
-                @Part("thirdAnswer") RequestBody thirdAnswer,
-                @Part("fourthAnswer") RequestBody fourthAnswer,
-                @Part("fifthAnswer") RequestBody fifthAnswer,
-                @Part("sixthAnswer") RequestBody sixthAnswer,
-                @Part("nominee_email") RequestBody nominee_email,
-                @Part("nominee_phone") RequestBody nominee_phone,
-                @Part("nominee_first_name") RequestBody nominee_firstName,
-                @Part("nominee_last_name") RequestBody nominee_lastName,
-                @Part("nominee_relationship") RequestBody nominee_relationship,
-                @Part MultipartBody.Part profile_pic);*/
-
+            signUpApiHit(firstName, lastName, email, phoneNumber, password);
         }
     }
 
@@ -218,7 +190,7 @@ public class SignUpActivity extends AppCompatActivity
 
                 try
                 {
-                    String imagePath = CommonMethods.getInstance().getRealPathFromURI(context, resultUri);
+                    imagePath = CommonMethods.getInstance().getRealPathFromURI(context, resultUri);
                     CommonMethods.getInstance().showImageGlide(context, activitySignUpBinding.imageViewProfile, imagePath);
                 }
                 catch (URISyntaxException e)
@@ -230,6 +202,53 @@ public class SignUpActivity extends AppCompatActivity
                 break;
 
         }
+    }
+
+
+    void signUpApiHit(String firstName, String lastName, String email, String phoneNumber, String password)
+    {
+        CommonDialogs.getInstance().showProgressDialog(context);
+
+        String json = "{\"firstName\":\"" + firstName + "\",\"lastName\":\"" + lastName + "\",\"phoneNumber\":\"" + phoneNumber + "\",\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
+        CommonMethods.getInstance().postMediaData("http://ticketing.hpwildlife.gov.in/Registration", imagePath, json, new Callback()
+        {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e)
+            {
+                Log.e(TAG, "onFailure  " + e.toString());
+                CommonDialogs.getInstance().dismissDialog();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException
+            {
+                CommonDialogs.getInstance().dismissDialog();
+
+                if (response.isSuccessful())
+                {
+                    //{"Status":400,"Message":"Try with other email as 'a@gmail.com' already exists."}
+                    //{"Status":200,"Message":"User has been created successfully.","userId":9,"firstName":"A","lastName":"A","phoneNumber":"1234564890","email":"z@gmail.com","password":null,"profileImageName":"ticketing.hpwildlife.gov.in\\ProfileImage\\d0e9ebd0-17aa-4118-9f50-0124949af775.jpg"}
+
+                    String responseStr = response.body().string();
+                    Log.e(TAG, responseStr);
+                    JsonObject jsonObject=CommonMethods.getInstance().convertStringToJson(responseStr);
+                    CommonMethods.getInstance().showSnackbar(view,context,jsonObject.get(MyConstants.MESSAGE).getAsString());
+                    if(jsonObject.get(MyConstants.STATUS).getAsInt()==200)
+                    {
+                        MySharedPreference.getInstance().saveUser(context, responseStr);
+                        startActivity(new Intent(context, MainActivity.class));
+                        finish();
+                    }
+
+                }
+                else
+                {
+                    String errorStr = response.body().string();
+//                    JsonObject jsonObject = CommonMethods.getInstance().convertStringToJson(errorStr);
+//                    CommonMethods.getInstance().showSnackbar(view, context, jsonObject.get(MyConstants.ERROR_DESCRIPTION).getAsString());
+                }
+            }
+        });
     }
 
 

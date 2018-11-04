@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -22,6 +23,9 @@ import android.widget.TextView;
 import java.util.Objects;
 
 import example.com.ballidaku.R;
+import example.com.ballidaku.mPin.IndicatorDots;
+import example.com.ballidaku.mPin.PinLockListener;
+import example.com.ballidaku.mPin.PinLockView;
 
 
 /**
@@ -41,7 +45,7 @@ public class CommonDialogs
     }
 
 
-    private void dismissDialog()
+    public void dismissDialog()
     {
         if (dialog != null && dialog.isShowing())
         {
@@ -126,7 +130,7 @@ public class CommonDialogs
     }
 
 
-    public void progressDialog(Context context)
+    public void showProgressDialog(Context context)
     {
         dismissDialog();
         dialog = new Dialog(context, R.style.DialogTheme);
@@ -196,6 +200,75 @@ public class CommonDialogs
             e.printStackTrace();
         }
     }
+
+
+    private PinLockView mPinLockView;
+    private int savedPasscode ;
+    private CommonInterfaces commonInterfaces;
+    public void showPasscodeDialog(Context context,int passcode,CommonInterfaces commonInterfaces)
+    {
+        this.commonInterfaces=commonInterfaces;
+
+        dismissDialog();
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_passcode);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+
+        mPinLockView = dialog.findViewById(R.id.pin_lock_view);
+        IndicatorDots mIndicatorDots = dialog.findViewById(R.id.indicator_dots);
+
+
+        mPinLockView.attachIndicatorDots(mIndicatorDots);
+        mPinLockView.setPinLockListener(mPinLockListener);
+
+        mPinLockView.setPinLength(4);
+        mPinLockView.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
+
+        mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FIXED);
+
+        savedPasscode =  passcode;
+    }
+
+    private PinLockListener mPinLockListener = new PinLockListener()
+    {
+        @Override
+        public void onComplete(String pin)
+        {
+
+            if(savedPasscode==Integer.parseInt(pin))
+            {
+                dismissDialog();
+                commonInterfaces.onSuccess();
+            }
+            else
+            {
+                commonInterfaces.onFailure();
+            }
+        }
+
+        @Override
+        public void onEmpty()
+        {
+//            Log.e(TAG, "Pin empty");
+        }
+
+        @Override
+        public void onPinChange(int pinLength, String intermediatePin)
+        {
+//            Log.e(TAG, "Pin changed, new length " + pinLength + " with intermediate pin " + intermediatePin);
+        }
+
+        @Override
+        public void onReset()
+        {
+            mPinLockView.resetPinLockView();
+        }
+    };
+
+
 
    /* public void showMessageDialog(Context context, String fromWhere, View.OnClickListener onClickListener)
     {

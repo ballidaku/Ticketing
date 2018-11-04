@@ -18,7 +18,8 @@
     <string name="print">Print</string>
     <string name="other">Other</string>
     <string name="parking">Parking</string>
-
+    <string name="enter_passcode">Enter Passcode</string>
+    <string name="passcode_mismatch">Passcode didn\'t match</string>
 
 
     <string name="please_wait">Please wait loading...</string>
@@ -70,5 +71,6 @@
 
     <string name="number_picker_formatter">%02d</string>
     <string name="roboto_light">sans-serif-light</string>
+
 
 </resources>

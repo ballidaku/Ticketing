@@ -7,21 +7,30 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import example.com.ballidaku.R;
 import example.com.ballidaku.adapters.MainFragmentAdapter;
 import example.com.ballidaku.commonClasses.CommonMethods;
 import example.com.ballidaku.commonClasses.GridSpacingItemDecoration;
+import example.com.ballidaku.commonClasses.MyConstants;
+import example.com.ballidaku.commonClasses.MySharedPreference;
 import example.com.ballidaku.databinding.FragmentMainBinding;
 import example.com.ballidaku.mainSceens.MainActivity;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
-public class MainFragment<D>  extends Fragment
+public class MainFragment<D> extends Fragment
 {
+    String TAG = MainFragment.class.getSimpleName();
+
     FragmentMainBinding fragmentMainBinding;
     View view;
     Context context;
@@ -54,11 +63,6 @@ public class MainFragment<D>  extends Fragment
     {
         ((MainActivity) context).updateToolbarTitle(getString(R.string.zones));
 
-//        ((MainActivity)context).setSupportActionBar(((MainActivity)context).activityMainBinding.toolbar);
-//        ((MainActivity)context).getSupportActionBar().setDisplayShowHomeEnabled(false);
-//        ((MainActivity)context).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
-
         ArrayList<D> mainList = new ArrayList<>();
         mainList.add((D) "VAN VIHAR\nDHUNGRI");
         mainList.add((D) "VAN VIHAR\nMANALI");
@@ -71,6 +75,9 @@ public class MainFragment<D>  extends Fragment
         fragmentMainBinding.recycleView.setItemAnimator(new DefaultItemAnimator());
 
         fragmentMainBinding.recycleView.setAdapter(mainFragmentAdapter);
+
+
+        getAllZoneApiHit();
     }
 
     public void setAdapter(ArrayList data)
@@ -78,8 +85,40 @@ public class MainFragment<D>  extends Fragment
         mainFragmentAdapter.addData(data);
     }
 
+    void getAllZoneApiHit()
+    {
+
+        String url = "http://ticketing.hpwildlife.gov.in/GetAllZone";
+
+        CommonMethods.getInstance().post(url,"", new Callback()
+        {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e)
+            {
+                Log.e(TAG, "onFailure  " + e.toString());
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException
+            {
+                if (response.isSuccessful())
+                {
+                    String responseStr = response.body().string();
+                    Log.e(TAG, responseStr);
+                    MySharedPreference.getInstance().saveData(context,MyConstants.ZONE_PASSWORD,responseStr);
+
+                }
+                else
+                {
+//                    String errorStr = response.body().string();
+//                    JsonObject jsonObject = CommonMethods.getInstance().convertStringToJson(errorStr);
+//                    CommonMethods.getInstance().showSnackbar(view, context, jsonObject.get(MyConstants.ERROR_DESCRIPTION).getAsString());
+                }
+            }
+        });
 
 
+    }
 
 
 }

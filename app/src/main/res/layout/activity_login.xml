@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -87,6 +88,7 @@
                                 android:hint="@string/enter_email"
                                 android:inputType="textEmailAddress"
                                 android:text=""
+                                android:textCursorDrawable="@null"
                                 android:theme="@style/EditTextTheme" />
 
                         </LinearLayout>
@@ -139,6 +141,7 @@
                                     android:hint="@string/enter_password"
                                     android:inputType="textPassword"
                                     android:text=""
+                                    android:textCursorDrawable="@null"
                                     android:theme="@style/EditTextTheme" />
 
                                 <ImageView

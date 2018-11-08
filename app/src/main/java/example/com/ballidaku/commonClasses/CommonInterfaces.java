@@ -11,5 +11,8 @@ public interface CommonInterfaces
     public default void onFailure()
     {}
 
+    public default void onChange(String oldPassword,String newPassword)
+    {}
+
 
 }

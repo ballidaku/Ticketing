@@ -30,15 +30,24 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Pattern;
 
 import example.com.ballidaku.BuildConfig;
@@ -350,31 +359,90 @@ public class CommonMethods
                     .build();
         }
 
-            Call call = client.newCall(request);
-            call.enqueue(callback);
+        Call call = client.newCall(request);
+        call.enqueue(callback);
 
-            return call;
-        }
-
-        public Call postMediaData (String url, String image, String json, Callback callback)
-        {
-            OkHttpClient client = new OkHttpClient();
-            RequestBody body = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("file", new File(image).getName(), RequestBody.create(MediaType.parse("image/*"), new File(image)))
-                    .addFormDataPart("Data", json)
-                    .build();
-
-            Request request = new Request.Builder()
-                    .url(url)
-                    .post(body)
-                    .build();
-
-            Call call = client.newCall(request);
-            call.enqueue(callback);
-
-            return call;
-        }
-
-
+        return call;
     }
+
+    public Call postMediaData(String url, String image, String json, Callback callback)
+    {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("file", new File(image).getName(), RequestBody.create(MediaType.parse("image/*"), new File(image)))
+                .addFormDataPart("Data", json)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        Call call = client.newCall(request);
+        call.enqueue(callback);
+
+        return call;
+    }
+
+
+    public Call postDataWithAuth(Context context,String url, String json, Callback callback)
+    {
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+        RequestBody body = RequestBody.create(mediaType, json);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .addHeader("Authorization", "bearer "+MySharedPreference.getInstance().getUserData(context,MyConstants.ACCESS_TOKEN))
+                .build();
+
+
+        Call call = client.newCall(request);
+        call.enqueue(callback);
+
+        return call;
+    }
+
+
+    public String convertBeanToString(TicketModel ticketModel)
+    {
+        Gson gson = new Gson();
+        return gson.toJson(ticketModel);
+    }
+
+    public JsonObject convertStringToJsonObject(String json)
+    {
+        JsonParser jsonParser = new JsonParser();
+        return  (JsonObject)jsonParser.parse(json);
+    }
+
+
+    public boolean isInternetAvailable() {
+
+        InetAddress inetAddress = null;
+        try {
+            Future<InetAddress> future = Executors.newSingleThreadExecutor().submit(new Callable<InetAddress>() {
+                @Override
+                public InetAddress call() {
+                    try {
+                        return InetAddress.getByName("google.com");
+                    } catch (UnknownHostException e) {
+                        return null;
+                    }
+                }
+            });
+            inetAddress = future.get(2000, TimeUnit.MILLISECONDS);
+            future.cancel(true);
+        } catch (InterruptedException e) {
+        } catch (ExecutionException e) {
+        } catch (TimeoutException e) {
+        }
+        return inetAddress!=null && !inetAddress.equals("");
+    }
+
+
+}

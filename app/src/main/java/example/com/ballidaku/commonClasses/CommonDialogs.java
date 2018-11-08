@@ -129,7 +129,73 @@ public class CommonDialogs
         });
     }
 
+    public void showChangePasswordDialog(Context context, CommonInterfaces commonInterfaces)
+    {
+        dismissDialog();
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_change_password);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.show();
 
+        EditText editTextOldPassword = dialog.findViewById(R.id.editTextOldPassword);
+        EditText editTextNewPassword = dialog.findViewById(R.id.editTextNewPassword);
+        EditText editTextConfirmNewPassword = dialog.findViewById(R.id.editTextConfirmNewPassword);
+
+
+        TextInputLayout textInputLayoutOldPasswod = dialog.findViewById(R.id.textInputLayoutOldPasswod);
+        TextInputLayout textInputLayoutNewPassword = dialog.findViewById(R.id.textInputLayoutNewPassword);
+        TextInputLayout textInputLayoutConfirmNewPassword = dialog.findViewById(R.id.textInputLayoutConfirmNewPassword);
+
+        dialog.findViewById(R.id.textViewCancel).setOnClickListener(view ->
+        {
+            CommonMethods.getInstance().hideKeypad(context, editTextOldPassword);
+            dismissDialog();
+        });
+
+        dialog.findViewById(R.id.textViewSend).setOnClickListener(view ->
+        {
+            final String oldPassword = editTextOldPassword.getText().toString().trim();
+            final String newPassword = editTextNewPassword.getText().toString().trim();
+            final String confirmNewPassword = editTextConfirmNewPassword.getText().toString().trim();
+
+            if (oldPassword.isEmpty())
+            {
+                textInputLayoutOldPasswod.setError(context.getString(R.string.old_passwor_error));
+            }
+            else if (oldPassword.length() < 6)
+            {
+                textInputLayoutOldPasswod.setError(context.getString(R.string.password_limit));
+            }
+            else if (newPassword.isEmpty())
+            {
+                textInputLayoutNewPassword.setError(context.getString(R.string.new_passwor_error));
+            }
+            else if (newPassword.length() < 6)
+            {
+                textInputLayoutNewPassword.setError(context.getString(R.string.password_limit));
+            }
+            else if (confirmNewPassword.isEmpty())
+            {
+                textInputLayoutConfirmNewPassword.setError(context.getString(R.string.confirm_new_passwor_error));
+            }
+            else if (confirmNewPassword.length() < 6)
+            {
+                textInputLayoutConfirmNewPassword.setError(context.getString(R.string.password_limit));
+            }
+            else if (!newPassword.equals(confirmNewPassword))
+            {
+                textInputLayoutNewPassword.setError(context.getString(R.string.match_passwor_error));
+                textInputLayoutConfirmNewPassword.setError(context.getString(R.string.match_passwor_error));
+            }
+            else
+            {
+                dismissDialog();
+                commonInterfaces.onChange(oldPassword,newPassword);
+            }
+        });
+    }
     public void showProgressDialog(Context context)
     {
         dismissDialog();

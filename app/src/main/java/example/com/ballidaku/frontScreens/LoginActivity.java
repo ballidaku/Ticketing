@@ -70,6 +70,10 @@ public class LoginActivity extends AppCompatActivity
         {
             showSnackbarMsg(context.getString(R.string.password_limit));
         }
+        else if(!CommonMethods.getInstance().isInternetAvailable())
+        {
+            showSnackbarMsg(context.getString(R.string.internet_not_available));
+        }
         else
         {
             loginApiHit(email, password);
@@ -105,12 +109,20 @@ public class LoginActivity extends AppCompatActivity
 
     public void onForgotClicked()
     {
+
         CommonDialogs.getInstance().showForgotPasswordDialog(context, new CommonInterfaces()
         {
             @Override
             public void onResponse(String response)
             {
-
+                if(CommonMethods.getInstance().isInternetAvailable())
+                {
+                    forgotpasswordApiHit(response);
+                }
+                else
+                {
+                    showSnackbarMsg(context.getString(R.string.internet_not_available));
+                }
             }
         });
     }
@@ -128,7 +140,8 @@ public class LoginActivity extends AppCompatActivity
         CommonDialogs.getInstance().showProgressDialog(context);
 
         String json = "grant_type=password&username=" + email + "&password=" + password;
-        CommonMethods.getInstance().post("http://ticketing.hpwildlife.gov.in/ValidateCredentials", json,new Callback()
+
+        CommonMethods.getInstance().post(MyConstants.LOGIN_URL, json,new Callback()
         {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e)
@@ -164,6 +177,49 @@ public class LoginActivity extends AppCompatActivity
 
     }
 
+
+    void forgotpasswordApiHit(String email)
+    {
+
+        CommonDialogs.getInstance().showProgressDialog(context);
+
+        String json = "email=" + email;
+
+        CommonMethods.getInstance().post(MyConstants.FORGOT_PASSWORD, json,new Callback()
+        {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e)
+            {
+                Log.e(TAG, "onFailure  " + e.toString());
+                CommonDialogs.getInstance().dismissDialog();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException
+            {
+                CommonDialogs.getInstance().dismissDialog();
+
+                if (response.isSuccessful())
+                {
+                    String responseStr = response.body().string();
+                    Log.e(TAG, responseStr);
+
+                    JsonObject jsonObject=CommonMethods.getInstance().convertStringToJson(responseStr);
+
+                   // if(jsonObject.get(MyConstants.STATUS).getAsInt()==200)
+                    CommonMethods.getInstance().showSnackbar(view, context, jsonObject.get(MyConstants.MESSAGE).getAsString());
+                }
+                else
+                {
+                    String errorStr = response.body().string();
+                    JsonObject jsonObject = CommonMethods.getInstance().convertStringToJson(errorStr);
+                    CommonMethods.getInstance().showSnackbar(view, context, jsonObject.get(MyConstants.ERROR_DESCRIPTION).getAsString());
+                }
+            }
+        });
+
+
+    }
 
 
 

@@ -88,7 +88,7 @@ public class MainFragmentAdapter<T> extends RecyclerView.Adapter<MainFragmentAda
                 if(position==i)
                 {
                     Log.e(TAG,"PassCode "+ jsonObject.get(MyConstants.PASSCODE).getAsInt());
-                    checkPasscode(jsonObject.get(MyConstants.PASSCODE).getAsInt(),position+1);
+                    checkPasscode(jsonObject.get(MyConstants.PASSCODE).getAsInt(),position+1,jsonObject.get(MyConstants.RANGE_ZONE_ID).getAsString());
                 }
             }
 
@@ -99,14 +99,14 @@ public class MainFragmentAdapter<T> extends RecyclerView.Adapter<MainFragmentAda
 
     }
 
-    private void checkPasscode(int passcode, int position)
+    private void checkPasscode(int passcode, int position,String rangeZoneID)
     {
         CommonDialogs.getInstance().showPasscodeDialog(context, passcode, new CommonInterfaces()
         {
             @Override
             public void onSuccess()
             {
-                ((MainActivity)context).changeFragment(position);
+                ((MainActivity)context).changeFragment(position,rangeZoneID);
             }
 
             @Override

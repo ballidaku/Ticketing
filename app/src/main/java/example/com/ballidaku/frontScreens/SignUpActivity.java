@@ -111,6 +111,10 @@ public class SignUpActivity extends AppCompatActivity
         {
             showSnackbarMsg(context.getString(R.string.password_confirm_not_matched));
         }
+        else if(!CommonMethods.getInstance().isInternetAvailable())
+        {
+            showSnackbarMsg(context.getString(R.string.internet_not_available));
+        }
         else
         {
             signUpApiHit(firstName, lastName, email, phoneNumber, password);
@@ -210,7 +214,8 @@ public class SignUpActivity extends AppCompatActivity
         CommonDialogs.getInstance().showProgressDialog(context);
 
         String json = "{\"firstName\":\"" + firstName + "\",\"lastName\":\"" + lastName + "\",\"phoneNumber\":\"" + phoneNumber + "\",\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
-        CommonMethods.getInstance().postMediaData("http://ticketing.hpwildlife.gov.in/Registration", imagePath, json, new Callback()
+
+        CommonMethods.getInstance().postMediaData(MyConstants.SIGN_UP_URL, imagePath, json, new Callback()
         {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e)

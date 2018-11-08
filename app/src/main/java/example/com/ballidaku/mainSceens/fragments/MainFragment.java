@@ -77,7 +77,14 @@ public class MainFragment<D> extends Fragment
         fragmentMainBinding.recycleView.setAdapter(mainFragmentAdapter);
 
 
-        getAllZoneApiHit();
+        if (!CommonMethods.getInstance().isInternetAvailable())
+        {
+            CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.internet_not_available));
+        }
+        else
+        {
+            getAllZoneApiHit();
+        }
     }
 
     public void setAdapter(ArrayList data)
@@ -88,9 +95,8 @@ public class MainFragment<D> extends Fragment
     void getAllZoneApiHit()
     {
 
-        String url = "http://ticketing.hpwildlife.gov.in/GetAllZone";
 
-        CommonMethods.getInstance().post(url,"", new Callback()
+        CommonMethods.getInstance().post(MyConstants.GET_ALL_ZONE, "", new Callback()
         {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e)
@@ -105,7 +111,7 @@ public class MainFragment<D> extends Fragment
                 {
                     String responseStr = response.body().string();
                     Log.e(TAG, responseStr);
-                    MySharedPreference.getInstance().saveData(context,MyConstants.ZONE_PASSWORD,responseStr);
+                    MySharedPreference.getInstance().saveData(context, MyConstants.ZONE_PASSWORD, responseStr);
 
                 }
                 else

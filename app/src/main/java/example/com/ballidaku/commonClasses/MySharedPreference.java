@@ -52,6 +52,9 @@ public class MySharedPreference
         editor.putString(MyConstants.MESSAGE, childJsonObject.get(MyConstants.MESSAGE).getAsString());
         editor.putString(MyConstants.USERID, childJsonObject.get(MyConstants.USERID).getAsString());
         editor.putString(MyConstants.FIRSTNAME, childJsonObject.get(MyConstants.FIRSTNAME).getAsString());
+        editor.putString(MyConstants.LASTNAME, childJsonObject.get(MyConstants.LASTNAME).getAsString());
+        editor.putString(MyConstants.PHONENUMBER, childJsonObject.get(MyConstants.PHONENUMBER).getAsString());
+        editor.putString(MyConstants.EMAIL, childJsonObject.get(MyConstants.EMAIL).getAsString());
         editor.putString(MyConstants.PROFILEIMAGENAME, childJsonObject.get(MyConstants.PROFILEIMAGENAME).getAsString());
         editor.apply();
     }

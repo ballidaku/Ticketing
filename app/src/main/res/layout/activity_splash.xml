@@ -19,6 +19,6 @@
         android:textStyle="bold"
         android:gravity="center"
         android:fontFamily="@font/chango"
-        android:textSize="@dimen/_40sdp"/>
+        android:textSize="@dimen/_30sdp"/>
 
 </RelativeLayout>

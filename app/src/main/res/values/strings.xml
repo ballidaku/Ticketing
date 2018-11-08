@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ticketing</string>
+    <string name="app_name">ETicketing</string>
     <string name="van_vihar_dhungri">Van Vihar Dhungri</string>
     <string name="van_vihar_manali">Van Vihar Manali</string>
     <string name="nature_park_manali">Nature Park Manali</string>
@@ -29,6 +29,8 @@
     <string name="enter_password">Enter password</string>
     <string name="enter_confirm_password">Enter confirm password</string>
     <string name="forgot">Forgot Password?</string>
+    <string name="change_password">Change Password?</string>
+    <string name="change">Change</string>
     <string name="signin">Sign In</string>
     <string name="dont_have_account">DON\'T HAVE AN ACCOUNT?</string>
     <string name="already_have_account">ALREADY HAVE AN ACCOUNT?</string>
@@ -45,6 +47,9 @@
 
     <string name="email">EMAIL</string>
     <string name="enter_email">Enter email</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
     <string name="please_enter_email">Please enter email.</string>
     <string name="please_enter_valid_email">Please enter valid email.</string>
     <string name="please_enter_password">Please enter password.</string>
@@ -56,10 +61,16 @@
     <string name="number_limit">Please enter phone number minimum of 6 digits.</string>
     <string name="please_enter_confirm_password">Please enter confirm password.</string>
     <string name="password_confirm_not_matched">Password &amp; confirm password didn\'t match.</string>
+    <string name="internet_not_available">Internet is not connected. Please check and try again.</string>
 
     <string name="enter_forgot_password">We just need your registered Email Id to send your password reset instructions.</string>
+    <string name="enter_change_password">To change password, please enter first old then new password.</string>
     <string name="cancel">Cancel</string>
     <string name="send">Send</string>
+    <string name="old_passwor_error">Old Password should not be empty.</string>
+    <string name="new_passwor_error">New Password should not be empty.</string>
+    <string name="confirm_new_passwor_error">Confirm Password should not be empty.</string>
+    <string name="match_passwor_error">New and Confirm Password didn\'t match.</string>
 
 
     <string name="take_photo">Take Photo</string>

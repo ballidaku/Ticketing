@@ -2,6 +2,17 @@ package example.com.ballidaku.commonClasses;
 
 public class MyConstants
 {
+
+
+    public static String LOGIN_URL = "http://ticketing.hpwildlife.gov.in/ValidateCredentials";
+    public static String SIGN_UP_URL = "http://ticketing.hpwildlife.gov.in/Registration";
+    public static String GET_ALL_ZONE = "http://ticketing.hpwildlife.gov.in/GetAllZone";
+    public static String SAVE_TICKET = "http://ticketing.hpwildlife.gov.in/SaveTicket";
+    public static String FORGOT_PASSWORD = "http://ticketing.hpwildlife.gov.in/ForgotPassword";
+    public static String CHANGE_PASSWORD = "http://ticketing.hpwildlife.gov.in/changePassword";
+    public static String SEND_REPORT = "http://ticketing.hpwildlife.gov.in/sendReport";
+
+
     public static final int CAMERA_REQUEST = 13;
     public static final int PICK_IMAGE_GALLERY = 14;
 
@@ -58,8 +69,11 @@ public class MyConstants
 
     public static String RANGEZONEBASICMODEL = "rangeZoneBasicModel";
     public static String ZONE_PASSWORD = "rangeZoneBasicModel";
-    public static String RANGEZONENAME = "rangeZoneName";
+    public static String RANGE_ZONE_NAME = "rangeZoneName";
+    public static String RANGE_ZONE_ID = "rangeZoneId";
     public static String PASSCODE = "passCode";
+    public static String TICKET_DETAIL_BASIC_MODEL = "ticketDetailBasicModel";
+    public static String TICKET_ID = "ticketId";
 
 
 

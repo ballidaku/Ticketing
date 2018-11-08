@@ -16,6 +16,8 @@ import example.com.ballidaku.R;
 import example.com.ballidaku.commonClasses.CommonMethods;
 import example.com.ballidaku.commonClasses.Model;
 import example.com.ballidaku.commonClasses.MyConstants;
+import example.com.ballidaku.commonClasses.MySharedPreference;
+import example.com.ballidaku.commonClasses.TicketModel;
 import example.com.ballidaku.databinding.FragmentFirstBinding;
 import example.com.ballidaku.mainSceens.MainActivity;
 import woyou.aidlservice.jiuiv5.ICallback;
@@ -26,6 +28,8 @@ public class FirstFragment extends Fragment
     FragmentFirstBinding fragmentFirstBinding;
     View view;
     Context context;
+
+    String rangeZoneID = "";
 
     int childrenPerCost = 0;
     int adultPerCost = 0;
@@ -58,6 +62,13 @@ public class FirstFragment extends Fragment
 
     void setUpViews()
     {
+
+        Bundle arguments = getArguments();
+        if (arguments != null)
+        {
+            rangeZoneID = arguments.getString(MyConstants.RANGE_ZONE_ID, "");
+        }
+
         ((MainActivity) context).updateToolbarTitle(getString(R.string.van_vihar_dhungri));
 
         ((MainActivity) context).setSupportActionBar(((MainActivity) context).activityMainBinding.toolbar);
@@ -154,61 +165,127 @@ public class FirstFragment extends Fragment
 
     public void onPrintClicked()
     {
-        int adultCount = fragmentFirstBinding.numberPickerAdult.getValue();
-        int adultTotal = adultCount * adultPerCost;
+        if (CommonMethods.getInstance().isInternetAvailable())
+        {
+            int adultCount = fragmentFirstBinding.numberPickerAdult.getValue();
+            int adultTotal = adultCount * adultPerCost;
 
-        int childrenCount = fragmentFirstBinding.numberPickerChildren.getValue();
-        int childrenTotal = childrenCount * childrenPerCost;
+            int childrenCount = fragmentFirstBinding.numberPickerChildren.getValue();
+            int childrenTotal = childrenCount * childrenPerCost;
 
-        int packageCount = fragmentFirstBinding.numberPickerPackage.getValue();
-        int packageTotal = packageCount * packagePerCost;
+            int packageCount = fragmentFirstBinding.numberPickerPackage.getValue();
+            int packageTotal = packageCount * packagePerCost;
 
-        int weeklyCount = fragmentFirstBinding.numberPickerWeekly.getValue();
-        int weeklyTotal = weeklyCount * weeklyPerCost;
+            int weeklyCount = fragmentFirstBinding.numberPickerWeekly.getValue();
+            int weeklyTotal = weeklyCount * weeklyPerCost;
 
-        int fortnightlyCount = fragmentFirstBinding.numberPickerFornightly.getValue();
-        int fornightlyTotal = fortnightlyCount * fortnightlyPerCost;
+            int fortnightlyCount = fragmentFirstBinding.numberPickerFornightly.getValue();
+            int fornightlyTotal = fortnightlyCount * fortnightlyPerCost;
 
-        int monthlyCount = fragmentFirstBinding.numberPickerMonthly.getValue();
-        int monthlyTotal = monthlyCount * monthlyPerCost;
+            int monthlyCount = fragmentFirstBinding.numberPickerMonthly.getValue();
+            int monthlyTotal = monthlyCount * monthlyPerCost;
 
 
-        int countTotal = adultCount + childrenCount + packageCount + weeklyCount + fortnightlyCount + monthlyCount;
-        int totalAmount = adultTotal + childrenTotal + packageTotal + weeklyTotal + fornightlyTotal + monthlyTotal;
+            int countTotal = adultCount + childrenCount + packageCount + weeklyCount + fortnightlyCount + monthlyCount;
+            int totalAmount = adultTotal + childrenTotal + packageTotal + weeklyTotal + fornightlyTotal + monthlyTotal;
 
-        String childrenCountString = CommonMethods.getInstance().fixedLengthString(childrenCount, 3);
-        String adultCountString = CommonMethods.getInstance().fixedLengthString(adultCount, 3);
-        String packageCountString = CommonMethods.getInstance().fixedLengthString(packageCount, 3);
-        String weeklyCountString = CommonMethods.getInstance().fixedLengthString(weeklyCount, 3);
-        String fortnightlyCountString = CommonMethods.getInstance().fixedLengthString(fortnightlyCount, 3);
-        String monthlyCountString = CommonMethods.getInstance().fixedLengthString(monthlyCount, 3);
-        String countTotalString = CommonMethods.getInstance().fixedLengthString(countTotal, 3);
+            String childrenCountString = CommonMethods.getInstance().fixedLengthString(childrenCount, 3);
+            String adultCountString = CommonMethods.getInstance().fixedLengthString(adultCount, 3);
+            String packageCountString = CommonMethods.getInstance().fixedLengthString(packageCount, 3);
+            String weeklyCountString = CommonMethods.getInstance().fixedLengthString(weeklyCount, 3);
+            String fortnightlyCountString = CommonMethods.getInstance().fixedLengthString(fortnightlyCount, 3);
+            String monthlyCountString = CommonMethods.getInstance().fixedLengthString(monthlyCount, 3);
+            String countTotalString = CommonMethods.getInstance().fixedLengthString(countTotal, 3);
 
-        String childrenTotalString = CommonMethods.getInstance().fixedLengthString(childrenTotal, 4);
-        String adultTotalString = CommonMethods.getInstance().fixedLengthString(adultTotal, 4);
-        String packageTotalString = CommonMethods.getInstance().fixedLengthString(packageTotal, 4);
-        String weeklyTotalString = CommonMethods.getInstance().fixedLengthString(weeklyTotal, 4);
-        String fortnightlyTotalString = CommonMethods.getInstance().fixedLengthString(fornightlyTotal, 4);
-        String monthlyTotalString = CommonMethods.getInstance().fixedLengthString(monthlyTotal, 4);
-        String totalAmountString = CommonMethods.getInstance().fixedLengthString(totalAmount, 4);
+            String childrenTotalString = CommonMethods.getInstance().fixedLengthString(childrenTotal, 5);
+            String adultTotalString = CommonMethods.getInstance().fixedLengthString(adultTotal, 5);
+            String packageTotalString = CommonMethods.getInstance().fixedLengthString(packageTotal, 5);
+            String weeklyTotalString = CommonMethods.getInstance().fixedLengthString(weeklyTotal, 5);
+            String fortnightlyTotalString = CommonMethods.getInstance().fixedLengthString(fornightlyTotal, 5);
+            String monthlyTotalString = CommonMethods.getInstance().fixedLengthString(monthlyTotal, 5);
+            String totalAmountString = CommonMethods.getInstance().fixedLengthString(totalAmount, 5);
 
-        printTicket(childrenCountString, childrenTotalString,
-                adultCountString, adultTotalString,
-                packageCountString, packageTotalString,
-                weeklyCountString, weeklyTotalString,
-                fortnightlyCountString, fortnightlyTotalString,
-                monthlyCountString, monthlyTotalString,
-                countTotalString, totalAmountString);
+
+            TicketModel ticketModel = new TicketModel();
+
+            ticketModel.setUserId(MySharedPreference.getInstance().getUserData(context, MyConstants.USERID));
+            ticketModel.setRangeZoneId(rangeZoneID);
+
+            ticketModel.setChildrenEntryTicketCount(childrenCountString);
+            ticketModel.setChildrenEntryTicketTotal(childrenTotalString);
+
+            ticketModel.setChildrenBatteryVehicleTicketCount("");
+            ticketModel.setChildrenBatteryVehicleTicketTotal("");
+
+            ticketModel.setAdultEntryTicketCount(adultCountString);
+            ticketModel.setAdultEntryTicketTotal(adultTotalString);
+
+            ticketModel.setForeignerEntryTicketCount("");
+            ticketModel.setForeignerEntryTicketTotal("");
+
+            ticketModel.setAdultBatteryVehicleTicketCount("");
+            ticketModel.setAdultBatteryVehicleTicketTotal("");
+
+            ticketModel.setBoatingTwoSeaterCount("");
+            ticketModel.setBoatingTwoSeaterTotal("");
+
+            ticketModel.setBoatingFourSeaterCount("");
+            ticketModel.setBoatingFourSeaterTotal("");
+
+            ticketModel.setPackagePerDayCount(packageCountString);
+            ticketModel.setPackagePerDayTotal(packageTotalString);
+
+            ticketModel.setWeeklyCount(weeklyCountString);
+            ticketModel.setWeeklyTotal(weeklyTotalString);
+
+            ticketModel.setFortnightlyCount(fortnightlyCountString);
+            ticketModel.setFortnightlyTotal(fortnightlyTotalString);
+
+            ticketModel.setMonthlyCount(monthlyCountString);
+            ticketModel.setMonthlyTotal(monthlyTotalString);
+
+            ticketModel.setAllEntryTicketCount("");
+            ticketModel.setAllEntryTicketTotal("");
+
+            ticketModel.setParkingUpto4hoursCount("");
+            ticketModel.setParkingUpto4hoursTotal("");
+
+            ticketModel.setParkingUpto8hoursCount("");
+            ticketModel.setParkingUpto8hoursTotal("");
+
+            ticketModel.setParkingUpto12hoursCount("");
+            ticketModel.setParkingUpto12hoursTotal("");
+
+            ticketModel.setTotalCount(countTotalString);
+            ticketModel.setTotalAmount(totalAmountString);
+
+            ((MainActivity) context).saveTicketApi(ticketModel);
+        }
+        else
+        {
+            CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.internet_not_available));
+        }
+
+
+//        printTicket(childrenCountString, childrenTotalString,
+//                adultCountString, adultTotalString,
+//                packageCountString, packageTotalString,
+//                weeklyCountString, weeklyTotalString,
+//                fortnightlyCountString, fortnightlyTotalString,
+//                monthlyCountString, monthlyTotalString,
+//                countTotalString, totalAmountString);
     }
 
 
-    void printTicket(String childrenCountString, String childrenTotalString,
+    /*void printTicket(String childrenCountString, String childrenTotalString,
                      String adultCountString, String adultTotalString,
                      String packageCountString, String packageTotalString,
                      String weeklyCountString, String weeklyTotalString,
                      String fortnightlyCountString, String fortnightlyTotalString,
                      String monthlyCountString, String monthlyTotalString,
-                     String countTotalString, String totalAmountString)
+                     String countTotalString, String totalAmountString)*/
+
+    public void printTicket(TicketModel ticketModel)
     {
         IWoyouService woyouService = ((MainActivity) context).getWoyouService();
         ICallback callback = ((MainActivity) context).getCallback();
@@ -218,7 +295,11 @@ public class FirstFragment extends Fragment
             String date = CommonMethods.getInstance().getDate();
             String time = CommonMethods.getInstance().getTime();
 
-            woyouService.printTextWithFont("*************************\n", "", 30, callback);
+            String firstName= MySharedPreference.getInstance().getUserData(context,MyConstants.FIRSTNAME);
+            String lastName= MySharedPreference.getInstance().getUserData(context,MyConstants.LASTNAME);
+            String userId= MySharedPreference.getInstance().getUserData(context,MyConstants.USERID);
+
+            /*woyouService.printTextWithFont("*************************\n", "", 30, callback);
             woyouService.printTextWithFont("       Van Vihar Dhungri       \n", "", 24, callback);
             woyouService.printTextWithFont("*************************\n", "", 30, callback);
             woyouService.printTextWithFont("Type           Count      Total\n", "", 24, callback);
@@ -237,7 +318,33 @@ public class FirstFragment extends Fragment
             woyouService.printTextWithFont("-------------------------------\n", "", 24, callback);
             woyouService.printTextWithFont("Total          x" + countTotalString + "      Rs " + totalAmountString + "\n", "", 24, callback);
             woyouService.printTextWithFont("-------------------------------\n", "", 24, callback);
-            woyouService.printTextWithFont("Date " + date + "   Time " + time + "\n\n\n\n", "", 24, callback);
+            woyouService.printTextWithFont("Date " + date + "   Time " + time + "\n\n\n\n", "", 24, callback);*/
+
+            woyouService.printTextWithFont("*************************\n", "", 30, callback);
+            woyouService.printTextWithFont("       Van Vihar Dhungri       \n", "", 24, callback);
+            woyouService.printTextWithFont("*************************\n", "", 30, callback);
+            woyouService.printTextWithFont("Type           Count      Total\n", "", 24, callback);
+            woyouService.printTextWithFont("-------------------------------\n", "", 24, callback);
+            woyouService.printTextWithFont("Entry Ticket         \n", "", 24, callback);
+            woyouService.printTextWithFont("-------------------------------\n", "", 24, callback);
+            woyouService.printTextWithFont("Children       x" + ticketModel.getChildrenEntryTicketCount() + "       " + ticketModel.getChildrenEntryTicketTotal() + "\n", "", 24, callback);
+            woyouService.printTextWithFont("Adult          x" + ticketModel.getAdultEntryTicketCount() + "       " + ticketModel.getAdultEntryTicketTotal() + "\n\n", "", 24, callback);
+
+            woyouService.printTextWithFont("Other                 \n", "", 24, callback);
+            woyouService.printTextWithFont("-------------------------------\n", "", 24, callback);
+            woyouService.printTextWithFont("Package        x" + ticketModel.getPackagePerDayCount() + "       " + ticketModel.getPackagePerDayTotal() + "\n", "", 24, callback);
+            woyouService.printTextWithFont("Weekly         x" + ticketModel.getWeeklyCount() + "       " + ticketModel.getWeeklyTotal() + "\n", "", 24, callback);
+            woyouService.printTextWithFont("Fortnightly    x" + ticketModel.getFortnightlyCount() + "       " + ticketModel.getFortnightlyTotal() + "\n", "", 24, callback);
+            woyouService.printTextWithFont("Monthly        x" + ticketModel.getMonthlyCount() + "       " + ticketModel.getMonthlyTotal() + "\n", "", 24, callback);
+            woyouService.printTextWithFont("-------------------------------\n", "", 24, callback);
+            woyouService.printTextWithFont("Total          x" + ticketModel.getTotalCount() + "    Rs " + ticketModel.getTotalAmount() + "\n", "", 24, callback);
+            woyouService.printTextWithFont("-------------------------------\n", "", 24, callback);
+            woyouService.printTextWithFont("Date " + date + "   Time " + time + "\n", "", 24, callback);
+            woyouService.printTextWithFont("Ticket Number : " + ticketModel.getTicketId() +"\n", "", 24, callback);
+            woyouService.printTextWithFont("Ticket By : " +firstName+" "+lastName+" ("+userId+")" +"\n\n\n\n", "", 24, callback);
+
+
+
 
         }
         catch (RemoteException e)

@@ -5,6 +5,7 @@
     <string name="nature_park_manali">Nature Park Manali</string>
     <string name="mini_zoo_rewalsar">Mini Zoo Rewalsar</string>
     <string name="zones">Zones</string>
+    <string name="history">History</string>
 
 
     <string name="children">Children</string>
@@ -31,6 +32,14 @@
     <string name="forgot">Forgot Password?</string>
     <string name="change_password">Change Password?</string>
     <string name="change">Change</string>
+    <string name="all">All</string>
+    <string name="custom">Custom</string>
+    <string name="search_by">Search By</string>
+    <string name="search">Search</string>
+    <string name="from_date">From Date</string>
+    <string name="from_date_validation">Please select From Date</string>
+    <string name="to_date_validation">Please select To Date</string>
+    <string name="to_date">To Date</string>
     <string name="signin">Sign In</string>
     <string name="dont_have_account">DON\'T HAVE AN ACCOUNT?</string>
     <string name="already_have_account">ALREADY HAVE AN ACCOUNT?</string>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="@dimen/_5sdp"
+    android:background="@android:color/white"
+    android:padding="0dp"
+    app:cardElevation="2dp"
+    app:cardUseCompatPadding="true"
+    card_view:cardPreventCornerOverlap="false">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Date"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/textViewDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="11 Oct 2018"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Total Tickets Count"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/textViewTicketCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Total Tickets Amount"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/textViewTotalAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

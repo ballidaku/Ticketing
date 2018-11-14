@@ -231,26 +231,19 @@ public class SignUpActivity extends AppCompatActivity
 
                 if (response.isSuccessful())
                 {
-                    //{"Status":400,"Message":"Try with other email as 'a@gmail.com' already exists."}
-                    //{"Status":200,"Message":"User has been created successfully.","userId":9,"firstName":"A","lastName":"A","phoneNumber":"1234564890","email":"z@gmail.com","password":null,"profileImageName":"ticketing.hpwildlife.gov.in\\ProfileImage\\d0e9ebd0-17aa-4118-9f50-0124949af775.jpg"}
-
                     String responseStr = response.body().string();
                     Log.e(TAG, responseStr);
-                    JsonObject jsonObject=CommonMethods.getInstance().convertStringToJson(responseStr);
-                    CommonMethods.getInstance().showSnackbar(view,context,jsonObject.get(MyConstants.MESSAGE).getAsString());
-                    if(jsonObject.get(MyConstants.STATUS).getAsInt()==200)
-                    {
-                        MySharedPreference.getInstance().saveUser(context, responseStr);
-                        startActivity(new Intent(context, MainActivity.class));
-                        finish();
-                    }
+                    MySharedPreference.getInstance().saveUser(context, responseStr);
+
+                    startActivity(new Intent(context,MainActivity.class));
+                    finish();
 
                 }
                 else
                 {
                     String errorStr = response.body().string();
-//                    JsonObject jsonObject = CommonMethods.getInstance().convertStringToJson(errorStr);
-//                    CommonMethods.getInstance().showSnackbar(view, context, jsonObject.get(MyConstants.ERROR_DESCRIPTION).getAsString());
+                    JsonObject jsonObject = CommonMethods.getInstance().convertStringToJson(errorStr);
+                    CommonMethods.getInstance().showSnackbar(view, context, jsonObject.get(MyConstants.ERROR_DESCRIPTION).getAsString());
                 }
             }
         });

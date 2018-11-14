@@ -38,6 +38,7 @@ import java.io.File;
 import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -158,6 +159,8 @@ public class CommonMethods
 
     private SimpleDateFormat df = new SimpleDateFormat("dd MMM yyyy", Locale.US);
     private SimpleDateFormat tf = new SimpleDateFormat("hh:mm a", Locale.US);
+    private SimpleDateFormat tfi = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+    private SimpleDateFormat tfo = new SimpleDateFormat("dd MMM yyyy", Locale.US);
 
     public String getDate()
     {
@@ -169,6 +172,20 @@ public class CommonMethods
     {
         Date c = Calendar.getInstance().getTime();
         return tf.format(c);
+    }
+    public String getFormattedDateTime(String dateTime)
+    {
+        Date date = null;
+        String str = null;
+
+        try {
+            date = tfi.parse(dateTime);
+            str = tfo.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return str;
     }
 
     public boolean isValidEmail(CharSequence target)
@@ -367,12 +384,24 @@ public class CommonMethods
 
     public Call postMediaData(String url, String image, String json, Callback callback)
     {
+
         OkHttpClient client = new OkHttpClient();
-        RequestBody body = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("file", new File(image).getName(), RequestBody.create(MediaType.parse("image/*"), new File(image)))
-                .addFormDataPart("Data", json)
-                .build();
+        RequestBody body;
+        if(image.isEmpty())
+        {
+             body = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("Data", json)
+                    .build();
+        }
+        else
+        {
+             body = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("file", new File(image).getName(), RequestBody.create(MediaType.parse("image/*"), new File(image)))
+                    .addFormDataPart("Data", json)
+                    .build();
+        }
 
         Request request = new Request.Builder()
                 .url(url)
@@ -389,8 +418,15 @@ public class CommonMethods
     public Call postDataWithAuth(Context context,String url, String json, Callback callback)
     {
         OkHttpClient client = new OkHttpClient();
-
-        MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+        MediaType mediaType;
+        if(url.equals(MyConstants.SAVE_TICKET))
+        {
+            mediaType = MediaType.parse("application/json; charset=utf-8");
+        }
+        else
+        {
+            mediaType = MediaType.parse("application/x-www-form-urlencoded");
+        }
         RequestBody body = RequestBody.create(mediaType, json);
 
         Request request = new Request.Builder()
@@ -412,6 +448,12 @@ public class CommonMethods
     {
         Gson gson = new Gson();
         return gson.toJson(ticketModel);
+    }
+
+    public HistoryModel convertStringToBean(String json)
+    {
+        Gson gson = new Gson();
+        return  gson.fromJson(json, HistoryModel.class);
     }
 
     public JsonObject convertStringToJsonObject(String json)

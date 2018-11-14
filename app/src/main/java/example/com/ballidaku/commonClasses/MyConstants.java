@@ -8,6 +8,7 @@ public class MyConstants
     public static String SIGN_UP_URL = "http://ticketing.hpwildlife.gov.in/Registration";
     public static String GET_ALL_ZONE = "http://ticketing.hpwildlife.gov.in/GetAllZone";
     public static String SAVE_TICKET = "http://ticketing.hpwildlife.gov.in/SaveTicket";
+    public static String GET_TICKET_HISTORY = "http://ticketing.hpwildlife.gov.in/ListTicketCollection";
     public static String FORGOT_PASSWORD = "http://ticketing.hpwildlife.gov.in/ForgotPassword";
     public static String CHANGE_PASSWORD = "http://ticketing.hpwildlife.gov.in/changePassword";
     public static String SEND_REPORT = "http://ticketing.hpwildlife.gov.in/sendReport";

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <!--<variable
+            name="viewModel"
+            type="example.com.ballidaku.commonClasses.Model"/>-->
+
+        <variable
+            name="handler"
+            type="example.com.ballidaku.mainSceens.fragments.HistoryFragment"/>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                android:textSize="@dimen/_14sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:text="@string/search_by"/>
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp">
+
+                <RadioButton
+                    android:id="@+id/radioButtonAll"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:buttonTint="@color/colorPrimary"
+                    android:text="@string/all"/>
+
+                <RadioButton
+                    android:id="@+id/radioButtonCustom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorPrimary"
+                    android:text="@string/custom"/>
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutFromTo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/textViewFromDate"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="none"
+                android:textSize="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:onClick="@{(v)-> handler.datePicker(v)}"
+                android:hint="@string/from_date"/>
+
+            <EditText
+                android:id="@+id/textViewToDate"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:focusable="false"
+                android:inputType="none"
+                android:onClick="@{(v)-> handler.datePicker(v)}"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_12sdp"
+                android:hint="@string/to_date"/>
+
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:text="@string/search"
+                android:onClick="@{ () -> handler.onSearch(textViewFromDate.getText().toString(),textViewToDate.getText().toString())}"/>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:spanCount="2"/>
+
+    </LinearLayout>
+
+</layout>

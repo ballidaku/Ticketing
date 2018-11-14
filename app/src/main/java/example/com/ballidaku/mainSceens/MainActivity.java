@@ -29,6 +29,7 @@ import example.com.ballidaku.commonClasses.TicketModel;
 import example.com.ballidaku.databinding.ActivityMainBinding;
 import example.com.ballidaku.mainSceens.fragments.FirstFragment;
 import example.com.ballidaku.mainSceens.fragments.FourthFragment;
+import example.com.ballidaku.mainSceens.fragments.HistoryFragment;
 import example.com.ballidaku.mainSceens.fragments.MainFragment;
 import example.com.ballidaku.mainSceens.fragments.SecondFragment;
 import example.com.ballidaku.mainSceens.fragments.ThirdFragment;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity
 
 
         context = this;
-        view=activityMainBinding.getRoot();
+        view = activityMainBinding.getRoot();
 
         setUpViews();
 
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity
 
 
     Fragment fragment = null;
+
     public void changeFragment(int v, String rangeZoneID)
     {
 
@@ -91,6 +93,10 @@ public class MainActivity extends AppCompatActivity
 
             case 4:
                 fragment = new FourthFragment();
+                break;
+
+            case 5:
+                fragment = new HistoryFragment();
                 break;
 
         }
@@ -192,18 +198,18 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.action_change_password:
 
-                CommonDialogs.getInstance().showChangePasswordDialog(context,new CommonInterfaces()
+                CommonDialogs.getInstance().showChangePasswordDialog(context, new CommonInterfaces()
                 {
                     @Override
-                    public void onChange(String oldPassword,String newPassword)
+                    public void onChange(String oldPassword, String newPassword)
                     {
-                        if(CommonMethods.getInstance().isInternetAvailable())
+                        if (CommonMethods.getInstance().isInternetAvailable())
                         {
-                            changePasswordApiHit(oldPassword,newPassword);
+                            changePasswordApiHit(oldPassword, newPassword);
                         }
                         else
                         {
-                            CommonMethods.getInstance().showSnackbar(view,context,context.getString(R.string.internet_not_available));
+                            CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.internet_not_available));
                         }
                     }
                 });
@@ -212,17 +218,21 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.acton_send_report:
 
-                if(CommonMethods.getInstance().isInternetAvailable())
+                if (CommonMethods.getInstance().isInternetAvailable())
                 {
                     sendReportApiHit();
                 }
                 else
                 {
-                    CommonMethods.getInstance().showSnackbar(view,context,context.getString(R.string.internet_not_available));
+                    CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.internet_not_available));
                 }
 
                 break;
 
+
+            case R.id.action_show_history:
+                changeFragment(5,"");
+                break;
 
             default:
                 break;
@@ -232,12 +242,10 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     /*API HITTING AREA*/
     public void saveTicketApi(TicketModel ticketModel)
     {
         String ticketModelString = CommonMethods.getInstance().convertBeanToString(ticketModel);
-
         CommonDialogs.getInstance().showProgressDialog(context);
         CommonMethods.getInstance().postDataWithAuth(context, MyConstants.SAVE_TICKET, ticketModelString, new Callback()
         {
@@ -261,21 +269,21 @@ public class MainActivity extends AppCompatActivity
                     ticketModel.setTicketId(ticketId);
 
 
-                    if(fragment instanceof FirstFragment)
+                    if (fragment instanceof FirstFragment)
                     {
-                        ((FirstFragment)fragment).printTicket(ticketModel);
+                        ((FirstFragment) fragment).printTicket(ticketModel);
                     }
-                    else if(fragment instanceof SecondFragment)
+                    else if (fragment instanceof SecondFragment)
                     {
-                        ((SecondFragment)fragment).printTicket(ticketModel);
+                        ((SecondFragment) fragment).printTicket(ticketModel);
                     }
-                    else if(fragment instanceof ThirdFragment)
+                    else if (fragment instanceof ThirdFragment)
                     {
-                        ((ThirdFragment)fragment).printTicket(ticketModel);
+                        ((ThirdFragment) fragment).printTicket(ticketModel);
                     }
-                    else if(fragment instanceof FourthFragment)
+                    else if (fragment instanceof FourthFragment)
                     {
-                        ((FourthFragment)fragment).printTicket(ticketModel);
+                        ((FourthFragment) fragment).printTicket(ticketModel);
                     }
 
                 }
@@ -294,10 +302,10 @@ public class MainActivity extends AppCompatActivity
     {
         CommonDialogs.getInstance().showProgressDialog(context);
 
-        String userId=MySharedPreference.getInstance().getUserData(context,MyConstants.USERID);
-        String json = "userId="+userId+"&oldPassword="+oldPassword+"&newPassword="+newPassword;
+        String userId = MySharedPreference.getInstance().getUserData(context, MyConstants.USERID);
+        String json = "userId=" + userId + "&oldPassword=" + oldPassword + "&newPassword=" + newPassword;
 
-        CommonMethods.getInstance().postDataWithAuth(context,MyConstants.CHANGE_PASSWORD, json,new Callback()
+        CommonMethods.getInstance().postDataWithAuth(context, MyConstants.CHANGE_PASSWORD, json, new Callback()
         {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e)
@@ -316,7 +324,7 @@ public class MainActivity extends AppCompatActivity
                     String responseStr = response.body().string();
                     Log.e(TAG, responseStr);
 
-                    JsonObject jsonObject=CommonMethods.getInstance().convertStringToJson(responseStr);
+                    JsonObject jsonObject = CommonMethods.getInstance().convertStringToJson(responseStr);
 
                     // if(jsonObject.get(MyConstants.STATUS).getAsInt()==200)
                     CommonMethods.getInstance().showSnackbar(view, context, jsonObject.get(MyConstants.MESSAGE).getAsString());
@@ -335,10 +343,10 @@ public class MainActivity extends AppCompatActivity
     {
         CommonDialogs.getInstance().showProgressDialog(context);
 
-        String email=MySharedPreference.getInstance().getUserData(context,MyConstants.EMAIL);
-        String json = "email="+email;
+        String email = MySharedPreference.getInstance().getUserData(context, MyConstants.EMAIL);
+        String json = "email=" + email;
 
-        CommonMethods.getInstance().postDataWithAuth(context,MyConstants.SEND_REPORT, json,new Callback()
+        CommonMethods.getInstance().postDataWithAuth(context, MyConstants.SEND_REPORT, json, new Callback()
         {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e)
@@ -357,7 +365,7 @@ public class MainActivity extends AppCompatActivity
                     String responseStr = response.body().string();
                     Log.e(TAG, responseStr);
 
-                    JsonObject jsonObject=CommonMethods.getInstance().convertStringToJson(responseStr);
+                    JsonObject jsonObject = CommonMethods.getInstance().convertStringToJson(responseStr);
 
                     // if(jsonObject.get(MyConstants.STATUS).getAsInt()==200)
                     CommonMethods.getInstance().showSnackbar(view, context, jsonObject.get(MyConstants.MESSAGE).getAsString());

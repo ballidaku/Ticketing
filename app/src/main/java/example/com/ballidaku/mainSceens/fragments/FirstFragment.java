@@ -165,7 +165,7 @@ public class FirstFragment extends Fragment
 
     public void onPrintClicked()
     {
-        if (CommonMethods.getInstance().isInternetAvailable())
+        if (CommonMethods.getInstance().isInternetAvailable(context))
         {
             int adultCount = fragmentFirstBinding.numberPickerAdult.getValue();
             int adultTotal = adultCount * adultPerCost;
@@ -267,6 +267,7 @@ public class FirstFragment extends Fragment
         }
 
 
+
 //        printTicket(childrenCountString, childrenTotalString,
 //                adultCountString, adultTotalString,
 //                packageCountString, packageTotalString,
@@ -295,9 +296,9 @@ public class FirstFragment extends Fragment
             String date = CommonMethods.getInstance().getDate();
             String time = CommonMethods.getInstance().getTime();
 
-            String firstName= MySharedPreference.getInstance().getUserData(context,MyConstants.FIRSTNAME);
-            String lastName= MySharedPreference.getInstance().getUserData(context,MyConstants.LASTNAME);
-            String userId= MySharedPreference.getInstance().getUserData(context,MyConstants.USERID);
+            String firstName = MySharedPreference.getInstance().getUserData(context, MyConstants.FIRSTNAME);
+            String lastName = MySharedPreference.getInstance().getUserData(context, MyConstants.LASTNAME);
+            String userId = MySharedPreference.getInstance().getUserData(context, MyConstants.USERID);
 
             /*woyouService.printTextWithFont("*************************\n", "", 30, callback);
             woyouService.printTextWithFont("       Van Vihar Dhungri       \n", "", 24, callback);
@@ -340,10 +341,8 @@ public class FirstFragment extends Fragment
             woyouService.printTextWithFont("Total          x" + ticketModel.getTotalCount() + "    Rs " + ticketModel.getTotalAmount() + "\n", "", 24, callback);
             woyouService.printTextWithFont("-------------------------------\n", "", 24, callback);
             woyouService.printTextWithFont("Date " + date + "   Time " + time + "\n", "", 24, callback);
-            woyouService.printTextWithFont("Ticket Number : " + ticketModel.getTicketId() +"\n", "", 24, callback);
-            woyouService.printTextWithFont("Ticket By : " +firstName+" "+lastName+" ("+userId+")" +"\n\n\n\n", "", 24, callback);
-
-
+            woyouService.printTextWithFont("Ticket Number : " + ticketModel.getTicketId() + "\n", "", 24, callback);
+            woyouService.printTextWithFont("Ticket By : " + firstName + " " + lastName + " (" + userId + ")" + "\n\n\n\n", "", 24, callback);
 
 
         }

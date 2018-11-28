@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onChange(String oldPassword, String newPassword)
                     {
-                        if (CommonMethods.getInstance().isInternetAvailable())
+                        if (CommonMethods.getInstance().isInternetAvailable(context))
                         {
                             changePasswordApiHit(oldPassword, newPassword);
                         }
@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.acton_send_report:
 
-                if (CommonMethods.getInstance().isInternetAvailable())
+                if (CommonMethods.getInstance().isInternetAvailable(context))
                 {
                     sendReportApiHit();
                 }
@@ -253,6 +253,12 @@ public class MainActivity extends AppCompatActivity
             public void onFailure(@NonNull Call call, @NonNull IOException e)
             {
                 Log.e(TAG, "onFailure  " + e.toString());
+                CommonDialogs.getInstance().dismissDialog();
+                //java.net.ConnectException: Failed to connect to ticketing.hpwildlife.gov.in/103.20.214.11:80
+//                if(e.toString().contains("failed to connect"))
+//                {
+                    CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.internet_not_available));
+//                }
             }
 
             @Override
@@ -264,26 +270,35 @@ public class MainActivity extends AppCompatActivity
                     String responseStr = response.body().string();
                     Log.e(TAG, responseStr);
 
-                    JsonObject jsonObject = CommonMethods.getInstance().convertStringToJsonObject(responseStr).getAsJsonObject(MyConstants.TICKET_DETAIL_BASIC_MODEL);
-                    String ticketId = jsonObject.get(MyConstants.TICKET_ID).getAsString();
-                    ticketModel.setTicketId(ticketId);
+                    JsonObject jsonObjectMain = CommonMethods.getInstance().convertStringToJsonObject(responseStr);
+
+                    if(jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt()==200)
+                    {
+                        JsonObject jsonObject = jsonObjectMain.getAsJsonObject(MyConstants.TICKET_DETAIL_BASIC_MODEL);
+                        String ticketId = jsonObject.get(MyConstants.TICKET_ID).getAsString();
+                        ticketModel.setTicketId(ticketId);
 
 
-                    if (fragment instanceof FirstFragment)
-                    {
-                        ((FirstFragment) fragment).printTicket(ticketModel);
+                        if (fragment instanceof FirstFragment)
+                        {
+                            ((FirstFragment) fragment).printTicket(ticketModel);
+                        }
+                        else if (fragment instanceof SecondFragment)
+                        {
+                            ((SecondFragment) fragment).printTicket(ticketModel);
+                        }
+                        else if (fragment instanceof ThirdFragment)
+                        {
+                            ((ThirdFragment) fragment).printTicket(ticketModel);
+                        }
+                        else if (fragment instanceof FourthFragment)
+                        {
+                            ((FourthFragment) fragment).printTicket(ticketModel);
+                        }
                     }
-                    else if (fragment instanceof SecondFragment)
+                    else  if(jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt()==400)
                     {
-                        ((SecondFragment) fragment).printTicket(ticketModel);
-                    }
-                    else if (fragment instanceof ThirdFragment)
-                    {
-                        ((ThirdFragment) fragment).printTicket(ticketModel);
-                    }
-                    else if (fragment instanceof FourthFragment)
-                    {
-                        ((FourthFragment) fragment).printTicket(ticketModel);
+                        MySharedPreference.getInstance().clearAllData(context);
                     }
 
                 }
@@ -312,6 +327,10 @@ public class MainActivity extends AppCompatActivity
             {
                 Log.e(TAG, "onFailure  " + e.toString());
                 CommonDialogs.getInstance().dismissDialog();
+//                if(e.toString().contains("Failed to connect to"))
+//                {
+                    CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.internet_not_available));
+//                }
             }
 
             @Override
@@ -324,10 +343,18 @@ public class MainActivity extends AppCompatActivity
                     String responseStr = response.body().string();
                     Log.e(TAG, responseStr);
 
-                    JsonObject jsonObject = CommonMethods.getInstance().convertStringToJson(responseStr);
+//                    JsonObject jsonObject = CommonMethods.getInstance().convertStringToJson(responseStr);
 
-                    // if(jsonObject.get(MyConstants.STATUS).getAsInt()==200)
-                    CommonMethods.getInstance().showSnackbar(view, context, jsonObject.get(MyConstants.MESSAGE).getAsString());
+                    JsonObject jsonObjectMain = CommonMethods.getInstance().convertStringToJsonObject(responseStr);
+
+                    if(jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt()==200)
+                    {
+                        CommonMethods.getInstance().showSnackbar(view, context, jsonObjectMain.get(MyConstants.MESSAGE).getAsString());
+                    }
+                    else  if(jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt()==400)
+                    {
+                        MySharedPreference.getInstance().clearAllData(context);
+                    }
                 }
                 else
                 {
@@ -353,6 +380,10 @@ public class MainActivity extends AppCompatActivity
             {
                 Log.e(TAG, "onFailure  " + e.toString());
                 CommonDialogs.getInstance().dismissDialog();
+//                if(e.toString().contains("Failed to connect to"))
+//                {
+                    CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.internet_not_available));
+//                }
             }
 
             @Override
@@ -365,10 +396,17 @@ public class MainActivity extends AppCompatActivity
                     String responseStr = response.body().string();
                     Log.e(TAG, responseStr);
 
-                    JsonObject jsonObject = CommonMethods.getInstance().convertStringToJson(responseStr);
+                    JsonObject jsonObjectMain = CommonMethods.getInstance().convertStringToJson(responseStr);
 
-                    // if(jsonObject.get(MyConstants.STATUS).getAsInt()==200)
-                    CommonMethods.getInstance().showSnackbar(view, context, jsonObject.get(MyConstants.MESSAGE).getAsString());
+                    if(jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt()==200)
+                    {
+                        CommonMethods.getInstance().showSnackbar(view, context, jsonObjectMain.get(MyConstants.MESSAGE).getAsString());
+                    }
+                    else  if(jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt()==400)
+                    {
+                        MySharedPreference.getInstance().clearAllData(context);
+                    }
+
                 }
                 else
                 {

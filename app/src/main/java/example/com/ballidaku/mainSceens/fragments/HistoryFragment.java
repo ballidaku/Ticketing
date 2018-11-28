@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.google.gson.JsonObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -124,7 +126,7 @@ public class HistoryFragment extends Fragment
 
     void preApiHit(int i)
     {
-        if (!CommonMethods.getInstance().isInternetAvailable())
+        if (!CommonMethods.getInstance().isInternetAvailable(context))
         {
 //            CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.internet_not_available));
         }
@@ -199,6 +201,10 @@ public class HistoryFragment extends Fragment
             {
                 Log.e(TAG, "onFailure  " + e.toString());
                 CommonDialogs.getInstance().dismissDialog();
+//                if(e.toString().contains("Failed to connect to"))
+//                {
+                    CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.internet_not_available));
+//                }
             }
 
             @Override
@@ -211,9 +217,18 @@ public class HistoryFragment extends Fragment
                     String responseStr = response.body().string();
                     Log.e(TAG, responseStr);
 
-                    HistoryModel historyModel = CommonMethods.getInstance().convertStringToBean(responseStr);
-                    historyFragmentAdapter.addData(historyModel.getListReportTicketCollectionModel());
-                    ((MainActivity) context).runOnUiThread(() -> historyFragmentAdapter.notifyDataSetChanged());
+                    JsonObject jsonObjectMain = CommonMethods.getInstance().convertStringToJson(responseStr);
+                    if(jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt()==200)
+                    {
+                        HistoryModel historyModel = CommonMethods.getInstance().convertStringToBean(responseStr);
+                        historyFragmentAdapter.addData(historyModel.getListReportTicketCollectionModel());
+                        ((MainActivity) context).runOnUiThread(() -> historyFragmentAdapter.notifyDataSetChanged());
+                    }
+                    else  if(jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt()==400)
+                    {
+                        MySharedPreference.getInstance().clearAllData(context);
+                    }
+
 
                 }
                 else

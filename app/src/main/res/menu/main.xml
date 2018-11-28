@@ -13,6 +13,7 @@
            android:title="Send Report"/>
 
     <item
+        app:showAsAction=""
         android:id="@+id/action_signout"
         android:title="SignOut"/>
 

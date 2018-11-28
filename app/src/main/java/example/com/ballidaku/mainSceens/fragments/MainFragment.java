@@ -77,7 +77,7 @@ public class MainFragment<D> extends Fragment
         fragmentMainBinding.recycleView.setAdapter(mainFragmentAdapter);
 
 
-        if (!CommonMethods.getInstance().isInternetAvailable())
+        if (!CommonMethods.getInstance().isInternetAvailable(context))
         {
             CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.internet_not_available));
         }

@@ -125,7 +125,7 @@ public class FourthFragment extends Fragment
 
     public void onPrintClicked()
     {
-        if (CommonMethods.getInstance().isInternetAvailable())
+        if (CommonMethods.getInstance().isInternetAvailable(context))
         {
             int adultCount = fragmentFourthBinding.numberPickerAdult.getValue();
             int adultTotal = adultCount * adultPerCost;

@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -351,7 +353,11 @@ public class CommonMethods
 
     public Call post(String url, String json, Callback callback)
     {
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .build();
 
         MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
         RequestBody body = RequestBody.create(mediaType, json);
@@ -385,7 +391,12 @@ public class CommonMethods
     public Call postMediaData(String url, String image, String json, Callback callback)
     {
 
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .build();
+
         RequestBody body;
         if(image.isEmpty())
         {
@@ -417,7 +428,12 @@ public class CommonMethods
 
     public Call postDataWithAuth(Context context,String url, String json, Callback callback)
     {
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .build();
+
         MediaType mediaType;
         if(url.equals(MyConstants.SAVE_TICKET))
         {
@@ -477,13 +493,24 @@ public class CommonMethods
                     }
                 }
             });
-            inetAddress = future.get(2000, TimeUnit.MILLISECONDS);
+            inetAddress = future.get(1000, TimeUnit.MILLISECONDS);
             future.cancel(true);
         } catch (InterruptedException e) {
         } catch (ExecutionException e) {
         } catch (TimeoutException e) {
         }
         return inetAddress!=null && !inetAddress.equals("");
+    }
+
+
+    public boolean isInternetAvailable(Context context)
+    {
+        ConnectivityManager cm =
+                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
     }
 
 

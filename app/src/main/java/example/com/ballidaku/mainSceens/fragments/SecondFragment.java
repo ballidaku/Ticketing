@@ -230,7 +230,7 @@ public class SecondFragment extends Fragment
 
     public void onPrintClicked()
     {
-        if (CommonMethods.getInstance().isInternetAvailable())
+        if (CommonMethods.getInstance().isInternetAvailable(context))
         {
             //******************************************************************************************
             // Entry ticket

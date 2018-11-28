@@ -192,7 +192,7 @@ public class ThirdFragment extends Fragment
 
     public void onPrintClicked()
     {
-        if (CommonMethods.getInstance().isInternetAvailable())
+        if (CommonMethods.getInstance().isInternetAvailable(context))
         {
             int allCount = fragmentThirdBinding.numberPickerAllCount.getValue();
             int allTotal = allCount * allPerCost;

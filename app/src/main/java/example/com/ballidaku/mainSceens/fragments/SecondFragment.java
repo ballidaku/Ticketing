@@ -391,7 +391,11 @@ public class SecondFragment extends Fragment
             ticketModel.setTotalCount(countTotalString);
             ticketModel.setTotalAmount(totalAmountString);
 
-            ((MainActivity) context).saveTicketApi(ticketModel);
+
+            if(CommonMethods.getInstance().isTicketEmpty(view,context,totalAmountString))
+            {
+                ((MainActivity) context).saveTicketApi(ticketModel);
+            }
         }
         else
         {

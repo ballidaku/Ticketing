@@ -71,6 +71,7 @@
     <string name="please_enter_confirm_password">Please enter confirm password.</string>
     <string name="password_confirm_not_matched">Password &amp; confirm password didn\'t match.</string>
     <string name="internet_not_available">Internet is not connected. Please check and try again.</string>
+    <string name="ticket_not_empty">Ticket should not be empty.</string>
 
     <string name="enter_forgot_password">We just need your registered Email Id to send your password reset instructions.</string>
     <string name="enter_change_password">To change password, please enter first old then new password.</string>

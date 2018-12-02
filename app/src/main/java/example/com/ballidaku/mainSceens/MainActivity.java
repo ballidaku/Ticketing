@@ -18,6 +18,8 @@ import android.view.View;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 
 import example.com.ballidaku.R;
 import example.com.ballidaku.commonClasses.CommonDialogs;
@@ -254,11 +256,13 @@ public class MainActivity extends AppCompatActivity
             {
                 Log.e(TAG, "onFailure  " + e.toString());
                 CommonDialogs.getInstance().dismissDialog();
+
                 //java.net.ConnectException: Failed to connect to ticketing.hpwildlife.gov.in/103.20.214.11:80
-//                if(e.toString().contains("failed to connect"))
-//                {
-                    CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.internet_not_available));
-//                }
+                if (e instanceof ConnectException || e instanceof SocketTimeoutException)
+                {
+                   runOnUiThread(() -> CommonDialogs.getInstance().showMessageDialog(context, context.getString(R.string.internet_not_available)));
+
+                }
             }
 
             @Override

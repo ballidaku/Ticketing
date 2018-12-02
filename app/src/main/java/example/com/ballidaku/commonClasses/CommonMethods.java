@@ -175,15 +175,19 @@ public class CommonMethods
         Date c = Calendar.getInstance().getTime();
         return tf.format(c);
     }
+
     public String getFormattedDateTime(String dateTime)
     {
         Date date = null;
         String str = null;
 
-        try {
+        try
+        {
             date = tfi.parse(dateTime);
             str = tfo.format(date);
-        } catch (ParseException e) {
+        }
+        catch (ParseException e)
+        {
             e.printStackTrace();
         }
 
@@ -398,16 +402,16 @@ public class CommonMethods
                 .build();
 
         RequestBody body;
-        if(image.isEmpty())
+        if (image.isEmpty())
         {
-             body = new MultipartBody.Builder()
+            body = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
                     .addFormDataPart("Data", json)
                     .build();
         }
         else
         {
-             body = new MultipartBody.Builder()
+            body = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
                     .addFormDataPart("file", new File(image).getName(), RequestBody.create(MediaType.parse("image/*"), new File(image)))
                     .addFormDataPart("Data", json)
@@ -426,16 +430,16 @@ public class CommonMethods
     }
 
 
-    public Call postDataWithAuth(Context context,String url, String json, Callback callback)
+    public Call postDataWithAuth(Context context, String url, String json, Callback callback)
     {
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
+//                .connectTimeout(10, TimeUnit.SECONDS)
+//                .writeTimeout(10, TimeUnit.SECONDS)
+//                .readTimeout(10, TimeUnit.SECONDS)
                 .build();
 
         MediaType mediaType;
-        if(url.equals(MyConstants.SAVE_TICKET))
+        if (url.equals(MyConstants.SAVE_TICKET))
         {
             mediaType = MediaType.parse("application/json; charset=utf-8");
         }
@@ -449,7 +453,7 @@ public class CommonMethods
                 .url(url)
                 .post(body)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                .addHeader("Authorization", "bearer "+MySharedPreference.getInstance().getUserData(context,MyConstants.ACCESS_TOKEN))
+                .addHeader("Authorization", "bearer " + MySharedPreference.getInstance().getUserData(context, MyConstants.ACCESS_TOKEN))
                 .build();
 
 
@@ -469,48 +473,77 @@ public class CommonMethods
     public HistoryModel convertStringToBean(String json)
     {
         Gson gson = new Gson();
-        return  gson.fromJson(json, HistoryModel.class);
+        return gson.fromJson(json, HistoryModel.class);
     }
 
     public JsonObject convertStringToJsonObject(String json)
     {
         JsonParser jsonParser = new JsonParser();
-        return  (JsonObject)jsonParser.parse(json);
+        return (JsonObject) jsonParser.parse(json);
     }
 
 
-    public boolean isInternetAvailable() {
+    public boolean isInternetAvailable()
+    {
 
         InetAddress inetAddress = null;
-        try {
-            Future<InetAddress> future = Executors.newSingleThreadExecutor().submit(new Callable<InetAddress>() {
+        try
+        {
+            Future<InetAddress> future = Executors.newSingleThreadExecutor().submit(new Callable<InetAddress>()
+            {
                 @Override
-                public InetAddress call() {
-                    try {
+                public InetAddress call()
+                {
+                    try
+                    {
                         return InetAddress.getByName("google.com");
-                    } catch (UnknownHostException e) {
+                    }
+                    catch (UnknownHostException e)
+                    {
                         return null;
                     }
                 }
             });
             inetAddress = future.get(1000, TimeUnit.MILLISECONDS);
             future.cancel(true);
-        } catch (InterruptedException e) {
-        } catch (ExecutionException e) {
-        } catch (TimeoutException e) {
         }
-        return inetAddress!=null && !inetAddress.equals("");
+        catch (InterruptedException e)
+        {
+        }
+        catch (ExecutionException e)
+        {
+        }
+        catch (TimeoutException e)
+        {
+        }
+        return inetAddress != null && !inetAddress.equals("");
     }
 
 
     public boolean isInternetAvailable(Context context)
     {
         ConnectivityManager cm =
-                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
+    }
+
+
+    public boolean isTicketEmpty(View view, Context context, String totalAmountString)
+    {
+
+        if (totalAmountString.trim().equals("0"))
+        {
+            CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.ticket_not_empty));
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+
     }
 
 

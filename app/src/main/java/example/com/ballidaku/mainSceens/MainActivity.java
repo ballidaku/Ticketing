@@ -18,8 +18,6 @@ import android.view.View;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
 
 import example.com.ballidaku.R;
 import example.com.ballidaku.commonClasses.CommonDialogs;
@@ -233,7 +231,7 @@ public class MainActivity extends AppCompatActivity
 
 
             case R.id.action_show_history:
-                changeFragment(5,"");
+                changeFragment(5, "");
                 break;
 
             default:
@@ -258,11 +256,12 @@ public class MainActivity extends AppCompatActivity
                 CommonDialogs.getInstance().dismissDialog();
 
                 //java.net.ConnectException: Failed to connect to ticketing.hpwildlife.gov.in/103.20.214.11:80
-                if (e instanceof ConnectException || e instanceof SocketTimeoutException)
-                {
-                   runOnUiThread(() -> CommonDialogs.getInstance().showMessageDialog(context, context.getString(R.string.internet_not_available)));
+//                if (e instanceof ConnectException || e instanceof SocketTimeoutException)
+//                {
+//                   runOnUiThread(() -> CommonDialogs.getInstance().showMessageDialog(context, context.getString(R.string.internet_not_available)));
+                runOnUiThread(() -> CommonDialogs.getInstance().showMessageDialog(context, e.toString()));
 
-                }
+//                }
             }
 
             @Override
@@ -276,7 +275,7 @@ public class MainActivity extends AppCompatActivity
 
                     JsonObject jsonObjectMain = CommonMethods.getInstance().convertStringToJsonObject(responseStr);
 
-                    if(jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt()==200)
+                    if (jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt() == 200)
                     {
                         JsonObject jsonObject = jsonObjectMain.getAsJsonObject(MyConstants.TICKET_DETAIL_BASIC_MODEL);
                         String ticketId = jsonObject.get(MyConstants.TICKET_ID).getAsString();
@@ -300,15 +299,21 @@ public class MainActivity extends AppCompatActivity
                             ((FourthFragment) fragment).printTicket(ticketModel);
                         }
                     }
-                    else  if(jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt()==400)
+                    else if (jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt() == 400)
                     {
                         MySharedPreference.getInstance().clearAllData(context);
+                    }
+                    else
+                    {
+                        runOnUiThread(() -> CommonDialogs.getInstance().showMessageDialog(context, "In Success : "+responseStr));
                     }
 
                 }
                 else
                 {
 //                    String errorStr = response.body().string();
+
+                    runOnUiThread(() -> CommonDialogs.getInstance().showMessageDialog(context, "In ELSE : "+response.body().toString()));
 //                    JsonObject jsonObject = CommonMethods.getInstance().convertStringToJson(errorStr);
 //                    CommonMethods.getInstance().showSnackbar(view, context, jsonObject.get(MyConstants.ERROR_DESCRIPTION).getAsString());
                 }
@@ -333,7 +338,7 @@ public class MainActivity extends AppCompatActivity
                 CommonDialogs.getInstance().dismissDialog();
 //                if(e.toString().contains("Failed to connect to"))
 //                {
-                    CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.internet_not_available));
+                CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.internet_not_available));
 //                }
             }
 
@@ -351,11 +356,11 @@ public class MainActivity extends AppCompatActivity
 
                     JsonObject jsonObjectMain = CommonMethods.getInstance().convertStringToJsonObject(responseStr);
 
-                    if(jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt()==200)
+                    if (jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt() == 200)
                     {
                         CommonMethods.getInstance().showSnackbar(view, context, jsonObjectMain.get(MyConstants.MESSAGE).getAsString());
                     }
-                    else  if(jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt()==400)
+                    else if (jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt() == 400)
                     {
                         MySharedPreference.getInstance().clearAllData(context);
                     }
@@ -386,7 +391,7 @@ public class MainActivity extends AppCompatActivity
                 CommonDialogs.getInstance().dismissDialog();
 //                if(e.toString().contains("Failed to connect to"))
 //                {
-                    CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.internet_not_available));
+                CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.internet_not_available));
 //                }
             }
 
@@ -402,11 +407,11 @@ public class MainActivity extends AppCompatActivity
 
                     JsonObject jsonObjectMain = CommonMethods.getInstance().convertStringToJson(responseStr);
 
-                    if(jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt()==200)
+                    if (jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt() == 200)
                     {
                         CommonMethods.getInstance().showSnackbar(view, context, jsonObjectMain.get(MyConstants.MESSAGE).getAsString());
                     }
-                    else  if(jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt()==400)
+                    else if (jsonObjectMain.has(MyConstants.STATUS) && jsonObjectMain.get(MyConstants.STATUS).getAsInt() == 400)
                     {
                         MySharedPreference.getInstance().clearAllData(context);
                     }

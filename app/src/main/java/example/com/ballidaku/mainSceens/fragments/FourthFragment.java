@@ -256,6 +256,8 @@ public class FourthFragment extends Fragment
             woyouService.printTextWithFont("Ticket Number : " + ticketModel.getTicketId() + "\n", "", 24, callback);
             woyouService.printTextWithFont("Ticket By : " + firstName + " " + lastName + " (" + userId + ")" + "\n\n\n\n", "", 24, callback);
 
+
+            CommonMethods.getInstance().refreshFragment(context,this);
         }
         catch (RemoteException e)
         {

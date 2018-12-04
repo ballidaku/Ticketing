@@ -123,6 +123,18 @@ public class CommonMethods
 
     }
 
+    public void refreshFragment(Context context,Fragment fragment)
+    {
+//        Fragment frg = null;
+//        frg = getSupportFragmentManager().findFragmentByTag("Your_Fragment_TAG");
+        final FragmentTransaction ft = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+        ft.detach(fragment);
+        ft.attach(fragment);
+        ft.commit();
+    }
+
+
+
     public void hideKeypad(Activity activity)
     {
         View view = activity.getCurrentFocus();
@@ -432,11 +444,12 @@ public class CommonMethods
 
     public Call postDataWithAuth(Context context, String url, String json, Callback callback)
     {
-        OkHttpClient client = new OkHttpClient.Builder()
+        OkHttpClient client = new OkHttpClient();
+//        OkHttpClient client = new OkHttpClient.Builder()
 //                .connectTimeout(10, TimeUnit.SECONDS)
 //                .writeTimeout(10, TimeUnit.SECONDS)
 //                .readTimeout(10, TimeUnit.SECONDS)
-                .build();
+//                .build();
 
         MediaType mediaType;
         if (url.equals(MyConstants.SAVE_TICKET))

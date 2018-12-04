@@ -292,6 +292,8 @@ public class FirstFragment extends Fragment
 
     public void printTicket(TicketModel ticketModel)
     {
+
+
         IWoyouService woyouService = ((MainActivity) context).getWoyouService();
         ICallback callback = ((MainActivity) context).getCallback();
 
@@ -348,6 +350,10 @@ public class FirstFragment extends Fragment
             woyouService.printTextWithFont("Ticket Number : " + ticketModel.getTicketId() + "\n", "", 24, callback);
             woyouService.printTextWithFont("Ticket By : " + firstName + " " + lastName + " (" + userId + ")" + "\n\n\n\n", "", 24, callback);
 
+
+
+
+            CommonMethods.getInstance().refreshFragment(context,this);
 
         }
         catch (RemoteException e)

@@ -33,8 +33,8 @@ public class MyConstants
 
 
 
-    public static int VAN_VIHAR_MANALI_CHILDREN_TICKET = 15;
-    public static int VAN_VIHAR_MANALI_ADULT_TICKET = 30;
+    public static int VAN_VIHAR_MANALI_CHILDREN_TICKET = 20;
+    public static int VAN_VIHAR_MANALI_ADULT_TICKET = 50;
 
     public static int VAN_VIHAR_MANALI_CHILDREN_TICKET_BATTERY_OPERATOR = 20;
     public static int VAN_VIHAR_MANALI_ADULT_TICKET_BATTERY_OPERATOR = 50;

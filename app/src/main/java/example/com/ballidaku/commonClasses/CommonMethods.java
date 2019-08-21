@@ -370,9 +370,9 @@ public class CommonMethods
     public Call post(String url, String json, Callback callback)
     {
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(100, TimeUnit.SECONDS)
+                .writeTimeout(100, TimeUnit.SECONDS)
+                .readTimeout(100, TimeUnit.SECONDS)
                 .build();
 
         MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
@@ -408,9 +408,9 @@ public class CommonMethods
     {
 
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(100, TimeUnit.SECONDS)
+                .writeTimeout(100, TimeUnit.SECONDS)
+                .readTimeout(100, TimeUnit.SECONDS)
                 .build();
 
         RequestBody body;
@@ -444,12 +444,12 @@ public class CommonMethods
 
     public Call postDataWithAuth(Context context, String url, String json, Callback callback)
     {
-        OkHttpClient client = new OkHttpClient();
-//        OkHttpClient client = new OkHttpClient.Builder()
-//                .connectTimeout(10, TimeUnit.SECONDS)
-//                .writeTimeout(10, TimeUnit.SECONDS)
-//                .readTimeout(10, TimeUnit.SECONDS)
-//                .build();
+       // OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(100, TimeUnit.SECONDS)
+                .writeTimeout(100, TimeUnit.SECONDS)
+                .readTimeout(100, TimeUnit.SECONDS)
+                .build();
 
         MediaType mediaType;
         if (url.equals(MyConstants.SAVE_TICKET))
@@ -502,19 +502,15 @@ public class CommonMethods
         InetAddress inetAddress = null;
         try
         {
-            Future<InetAddress> future = Executors.newSingleThreadExecutor().submit(new Callable<InetAddress>()
+            Future<InetAddress> future = Executors.newSingleThreadExecutor().submit(() ->
             {
-                @Override
-                public InetAddress call()
+                try
                 {
-                    try
-                    {
-                        return InetAddress.getByName("google.com");
-                    }
-                    catch (UnknownHostException e)
-                    {
-                        return null;
-                    }
+                    return InetAddress.getByName("google.com");
+                }
+                catch (UnknownHostException e)
+                {
+                    return null;
                 }
             });
             inetAddress = future.get(1000, TimeUnit.MILLISECONDS);

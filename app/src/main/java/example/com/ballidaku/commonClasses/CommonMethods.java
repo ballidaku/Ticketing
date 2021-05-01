@@ -16,12 +16,11 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -32,6 +31,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -45,7 +45,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -102,7 +101,7 @@ public class CommonMethods
 
         snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG).setAction("Action", null);
         snackbar.getView().setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite));
-        TextView tv = snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+        TextView tv = snackbar.getView().findViewById(R.id.snackbar_text);
         tv.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
         tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
         snackbar.show();
@@ -274,7 +273,7 @@ public class CommonMethods
                     return cursor.getString(column_index);
                 }
             }
-            catch (Exception e)
+            catch (Exception ignored)
             {
             }
         }

@@ -3,15 +3,16 @@ package example.com.ballidaku.commonClasses;
 public class MyConstants
 {
 
+    public static String BASE_URL = "http://ticketing.egateways.in";
 
-    public static String LOGIN_URL = "http://ticketing.hpwildlife.gov.in/ValidateCredentials";
-    public static String SIGN_UP_URL = "http://ticketing.hpwildlife.gov.in/Registration";
-    public static String GET_ALL_ZONE = "http://ticketing.hpwildlife.gov.in/GetAllZone";
-    public static String SAVE_TICKET = "http://ticketing.hpwildlife.gov.in/SaveTicket";
-    public static String GET_TICKET_HISTORY = "http://ticketing.hpwildlife.gov.in/ListTicketCollection";
-    public static String FORGOT_PASSWORD = "http://ticketing.hpwildlife.gov.in/ForgotPassword";
-    public static String CHANGE_PASSWORD = "http://ticketing.hpwildlife.gov.in/changePassword";
-    public static String SEND_REPORT = "http://ticketing.hpwildlife.gov.in/sendReport";
+    public static String LOGIN_URL = BASE_URL+"/ValidateCredentials";
+    public static String SIGN_UP_URL = BASE_URL+"/Registration";
+    public static String GET_ALL_ZONE = BASE_URL+"/GetAllZone";
+    public static String SAVE_TICKET = BASE_URL+"/SaveTicket";
+    public static String GET_TICKET_HISTORY = BASE_URL+"/ListTicketCollection";
+    public static String FORGOT_PASSWORD = BASE_URL+"/ForgotPassword";
+    public static String CHANGE_PASSWORD = BASE_URL+"/changePassword";
+    public static String SEND_REPORT = BASE_URL+"/sendReport";
 
 
     public static final int CAMERA_REQUEST = 13;

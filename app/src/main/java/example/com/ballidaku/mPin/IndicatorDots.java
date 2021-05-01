@@ -3,7 +3,7 @@ package example.com.ballidaku.mPin;
 import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;

@@ -9,8 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.provider.MediaStore;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -19,6 +18,8 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
@@ -233,7 +234,7 @@ public class CommonDialogs
             if (hasPerm == PackageManager.PERMISSION_GRANTED)
             {
                 final CharSequence[] options = {context.getString(R.string.take_photo), context.getString(R.string.choose_from_gallery), context.getString(R.string.cancel)};
-                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
+                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
                 builder.setTitle(context.getString(R.string.select_option));
                 builder.setItems(options, (dialog, item) ->
                 {
@@ -298,7 +299,7 @@ public class CommonDialogs
         savedPasscode =  passcode;
     }
 
-    private PinLockListener mPinLockListener = new PinLockListener()
+    private final PinLockListener mPinLockListener = new PinLockListener()
     {
         @Override
         public void onComplete(String pin)

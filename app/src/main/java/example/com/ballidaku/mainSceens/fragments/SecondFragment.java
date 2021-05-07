@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 
 import example.com.ballidaku.R;
 import example.com.ballidaku.commonClasses.CommonMethods;
+import example.com.ballidaku.commonClasses.CommonSwitchFragmentsMethods;
+import example.com.ballidaku.commonClasses.Constants;
 import example.com.ballidaku.commonClasses.Model;
 import example.com.ballidaku.commonClasses.MyConstants;
 import example.com.ballidaku.commonClasses.MySharedPreference;
@@ -418,6 +420,8 @@ public class SecondFragment extends Fragment
 
     public void printTicket(TicketModel ticketModel)
     {
+
+
         IWoyouService woyouService = ((MainActivity) context).getWoyouService();
         ICallback callback = ((MainActivity) context).getCallback();
 
@@ -477,7 +481,11 @@ public class SecondFragment extends Fragment
             woyouService.printTextWithFont("Ticket By : " + firstName + " " + lastName + " (" + userId + ")" + "\n\n\n\n", "", 24, callback);
 
 
-            CommonMethods.getInstance().refreshFragment(context,this);
+//            CommonMethods.getInstance().refreshFragment(context,this);
+
+            CommonSwitchFragmentsMethods.INSTANCE.removeFragmentByTag(context, Constants.FragmentTags.SecondFragment);
+            ((MainActivity)context).changeFragment(2,rangeZoneID,true);
+
         }
         catch (RemoteException e)
         {

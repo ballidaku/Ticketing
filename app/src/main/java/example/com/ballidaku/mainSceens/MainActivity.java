@@ -4,16 +4,17 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.IBinder;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
 import com.google.gson.JsonObject;
 
@@ -23,6 +24,8 @@ import example.com.ballidaku.R;
 import example.com.ballidaku.commonClasses.CommonDialogs;
 import example.com.ballidaku.commonClasses.CommonInterfaces;
 import example.com.ballidaku.commonClasses.CommonMethods;
+import example.com.ballidaku.commonClasses.CommonSwitchFragmentsMethods;
+import example.com.ballidaku.commonClasses.Constants;
 import example.com.ballidaku.commonClasses.MyConstants;
 import example.com.ballidaku.commonClasses.MySharedPreference;
 import example.com.ballidaku.commonClasses.TicketModel;
@@ -47,7 +50,6 @@ public class MainActivity extends AppCompatActivity
     Context context;
     View view;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -55,48 +57,48 @@ public class MainActivity extends AppCompatActivity
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         activityMainBinding.setViewModel(this);
 
-
         context = this;
         view = activityMainBinding.getRoot();
 
         setUpViews();
 
-        changeFragment(0, "");
+        changeFragment(0, "", false);
     }
 
-
-    Fragment fragment = null;
-
-    public void changeFragment(int v, String rangeZoneID)
+    public void changeFragment(int v, String rangeZoneID, boolean haveToAddBackStack)
     {
-
-        boolean haveToAddBackStack = true;
+        Fragment fragment = null;
+        String fragmentTag = "";
         switch (v)
         {
             case 0:
-                haveToAddBackStack = false;
                 fragment = new MainFragment<>();
+                fragmentTag = Constants.FragmentTags.MainFragment;
                 break;
 
             case 1:
                 fragment = new FirstFragment();
+                fragmentTag = Constants.FragmentTags.FirstFragment;
                 break;
 
             case 2:
                 fragment = new SecondFragment();
-
+                fragmentTag = Constants.FragmentTags.SecondFragment;
                 break;
 
             case 3:
                 fragment = new ThirdFragment();
+                fragmentTag = Constants.FragmentTags.ThirdFragment;
                 break;
 
             case 4:
                 fragment = new FourthFragment();
+                fragmentTag = Constants.FragmentTags.FourthFragment;
                 break;
 
             case 5:
                 fragment = new HistoryFragment();
+                fragmentTag = Constants.FragmentTags.HistoryFragment;
                 break;
 
         }
@@ -105,7 +107,14 @@ public class MainActivity extends AppCompatActivity
         bundle.putString(MyConstants.RANGE_ZONE_ID, rangeZoneID);
         fragment.setArguments(bundle);
 
-        CommonMethods.getInstance().switchfragment(context, fragment, haveToAddBackStack);
+//        CommonMethods.getInstance().switchfragment(context, fragment, haveToAddBackStack);
+
+        CommonSwitchFragmentsMethods.INSTANCE.switchFragmentWithTag(
+                context,
+                R.id.container_body,
+                fragment,
+                haveToAddBackStack,
+                fragmentTag);
 
     }
 
@@ -177,7 +186,6 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -229,9 +237,8 @@ public class MainActivity extends AppCompatActivity
 
                 break;
 
-
             case R.id.action_show_history:
-                changeFragment(5, "");
+                changeFragment(5, "", true);
                 break;
 
             default:
@@ -240,7 +247,6 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
 
     /*API HITTING AREA*/
     public void saveTicketApi(TicketModel ticketModel)
@@ -281,6 +287,7 @@ public class MainActivity extends AppCompatActivity
                         String ticketId = jsonObject.get(MyConstants.TICKET_ID).getAsString();
                         ticketModel.setTicketId(ticketId);
 
+                        Fragment fragment = CommonSwitchFragmentsMethods.INSTANCE.getVisibleFragment(context, R.id.container_body);
 
                         if (fragment instanceof FirstFragment)
                         {
@@ -305,7 +312,7 @@ public class MainActivity extends AppCompatActivity
                     }
                     else
                     {
-                        runOnUiThread(() -> CommonDialogs.getInstance().showMessageDialog(context, "In Success : "+responseStr));
+                        runOnUiThread(() -> CommonDialogs.getInstance().showMessageDialog(context, "In Success : " + responseStr));
                     }
 
                 }
@@ -313,14 +320,13 @@ public class MainActivity extends AppCompatActivity
                 {
 //                    String errorStr = response.body().string();
 
-                    runOnUiThread(() -> CommonDialogs.getInstance().showMessageDialog(context, "In ELSE : "+response.body().toString()));
+                    runOnUiThread(() -> CommonDialogs.getInstance().showMessageDialog(context, "In ELSE : " + response.body().toString()));
 //                    JsonObject jsonObject = CommonMethods.getInstance().convertStringToJson(errorStr);
 //                    CommonMethods.getInstance().showSnackbar(view, context, jsonObject.get(MyConstants.ERROR_DESCRIPTION).getAsString());
                 }
             }
         });
     }
-
 
     public void changePasswordApiHit(String oldPassword, String newPassword)
     {

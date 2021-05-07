@@ -122,6 +122,7 @@ public class CommonMethods
 
     }
 
+
     public void refreshFragment(Context context,Fragment fragment)
     {
 //        Fragment frg = null;

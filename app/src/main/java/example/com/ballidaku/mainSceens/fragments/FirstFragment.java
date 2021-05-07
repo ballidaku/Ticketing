@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 
 import example.com.ballidaku.R;
 import example.com.ballidaku.commonClasses.CommonMethods;
+import example.com.ballidaku.commonClasses.CommonSwitchFragmentsMethods;
+import example.com.ballidaku.commonClasses.Constants;
 import example.com.ballidaku.commonClasses.Model;
 import example.com.ballidaku.commonClasses.MyConstants;
 import example.com.ballidaku.commonClasses.MySharedPreference;
@@ -26,7 +28,7 @@ import woyou.aidlservice.jiuiv5.IWoyouService;
 public class FirstFragment extends Fragment
 {
     FragmentFirstBinding fragmentFirstBinding;
-    View view;
+    View rootView;
     Context context;
 
     String rangeZoneID = "";
@@ -48,16 +50,15 @@ public class FirstFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+            fragmentFirstBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_first, container, false);
+            rootView = fragmentFirstBinding.getRoot();
+            context = getContext();
+            fragmentFirstBinding.setHandler(this);
 
-        fragmentFirstBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_first, container, false);
-        view = fragmentFirstBinding.getRoot();
-        context = getContext();
-        fragmentFirstBinding.setHandler(this);
+            setUpViews();
 
 
-        setUpViews();
-
-        return view;
+        return rootView;
     }
 
     void setUpViews()
@@ -259,7 +260,7 @@ public class FirstFragment extends Fragment
             ticketModel.setTotalCount(countTotalString);
             ticketModel.setTotalAmount(totalAmountString);
 
-            if(CommonMethods.getInstance().isTicketEmpty(view,context,totalAmountString))
+            if(CommonMethods.getInstance().isTicketEmpty(rootView,context,totalAmountString))
             {
                 ((MainActivity) context).saveTicketApi(ticketModel);
             }
@@ -267,7 +268,7 @@ public class FirstFragment extends Fragment
         }
         else
         {
-            CommonMethods.getInstance().showSnackbar(view, context, context.getString(R.string.internet_not_available));
+            CommonMethods.getInstance().showSnackbar(rootView, context, context.getString(R.string.internet_not_available));
         }
 
 
@@ -292,7 +293,6 @@ public class FirstFragment extends Fragment
 
     public void printTicket(TicketModel ticketModel)
     {
-
 
         IWoyouService woyouService = ((MainActivity) context).getWoyouService();
         ICallback callback = ((MainActivity) context).getCallback();
@@ -353,7 +353,10 @@ public class FirstFragment extends Fragment
 
 
 
-            CommonMethods.getInstance().refreshFragment(context,this);
+//            CommonMethods.getInstance().refreshFragment(context,this);
+            CommonSwitchFragmentsMethods.INSTANCE.removeFragmentByTag(context, Constants.FragmentTags.FirstFragment);
+            ((MainActivity)context).changeFragment(1,rangeZoneID,true);
+
 
         }
         catch (RemoteException e)

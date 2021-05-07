@@ -108,7 +108,7 @@ public class MainFragmentAdapter<T> extends RecyclerView.Adapter<MainFragmentAda
             @Override
             public void onSuccess()
             {
-                ((MainActivity)context).changeFragment(position,rangeZoneID);
+                ((MainActivity)context).changeFragment(position,rangeZoneID, true);
             }
 
             @Override

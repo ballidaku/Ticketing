@@ -1,19 +1,22 @@
 package example.com.ballidaku.mainSceens.fragments;
 
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.RemoteException;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
 import example.com.ballidaku.R;
 import example.com.ballidaku.commonClasses.CommonMethods;
+import example.com.ballidaku.commonClasses.CommonSwitchFragmentsMethods;
+import example.com.ballidaku.commonClasses.Constants;
 import example.com.ballidaku.commonClasses.Model;
 import example.com.ballidaku.commonClasses.MyConstants;
 import example.com.ballidaku.commonClasses.MySharedPreference;
@@ -226,6 +229,7 @@ public class FourthFragment extends Fragment
     //    void printTicket(String childrenCountString, String childrenTotalString, String adultCountString, String adultTotalString, String foreignerCountString,String foreignerTotalString,String countTotalString, String totalAmountString)
     public void printTicket(TicketModel ticketModel)
     {
+
         IWoyouService woyouService = ((MainActivity) context).getWoyouService();
         ICallback callback = ((MainActivity) context).getCallback();
 
@@ -234,7 +238,6 @@ public class FourthFragment extends Fragment
             String firstName = MySharedPreference.getInstance().getUserData(context, MyConstants.FIRSTNAME);
             String lastName = MySharedPreference.getInstance().getUserData(context, MyConstants.LASTNAME);
             String userId = MySharedPreference.getInstance().getUserData(context, MyConstants.USERID);
-
 
             String date = CommonMethods.getInstance().getDate();
             String time = CommonMethods.getInstance().getTime();
@@ -256,8 +259,10 @@ public class FourthFragment extends Fragment
             woyouService.printTextWithFont("Ticket Number : " + ticketModel.getTicketId() + "\n", "", 24, callback);
             woyouService.printTextWithFont("Ticket By : " + firstName + " " + lastName + " (" + userId + ")" + "\n\n\n\n", "", 24, callback);
 
+//            CommonMethods.getInstance().refreshFragment(context,this);
 
-            CommonMethods.getInstance().refreshFragment(context,this);
+            CommonSwitchFragmentsMethods.INSTANCE.removeFragmentByTag(context, Constants.FragmentTags.FourthFragment);
+            ((MainActivity) context).changeFragment(4, rangeZoneID, true);
         }
         catch (RemoteException e)
         {

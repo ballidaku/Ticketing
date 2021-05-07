@@ -30,6 +30,8 @@ import example.com.ballidaku.R;
 import example.com.ballidaku.adapters.HistoryFragmentAdapter;
 import example.com.ballidaku.commonClasses.CommonDialogs;
 import example.com.ballidaku.commonClasses.CommonMethods;
+import example.com.ballidaku.commonClasses.CommonSwitchFragmentsMethods;
+import example.com.ballidaku.commonClasses.Constants;
 import example.com.ballidaku.commonClasses.HistoryModel;
 import example.com.ballidaku.commonClasses.MyConstants;
 import example.com.ballidaku.commonClasses.MySharedPreference;
@@ -175,7 +177,9 @@ public class HistoryFragment extends Fragment
         {
 
             case android.R.id.home:
-                ((MainActivity) context).onBackPressed();
+                CommonSwitchFragmentsMethods.INSTANCE.removeFragmentByTag(context, Constants.FragmentTags.HistoryFragment);
+
+//                ((MainActivity) context).onBackPressed();
                 return true;
         }
         return false;
@@ -185,9 +189,9 @@ public class HistoryFragment extends Fragment
     public void onDestroy()
     {
         super.onDestroy();
-        ((MainActivity) context).getSupportActionBar().setDisplayShowHomeEnabled(false);
-        ((MainActivity) context).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ((MainActivity) context).getSupportActionBar().setTitle("");
+//        ((MainActivity) context).getSupportActionBar().setDisplayShowHomeEnabled(false);
+//        ((MainActivity) context).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        ((MainActivity) context).getSupportActionBar().setTitle("");
     }
 
 
